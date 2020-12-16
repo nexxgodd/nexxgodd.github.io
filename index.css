@@ -1,0 +1,25 @@
+body{
+	background-image: url("/bg.jpg");
+	background-size: cover;
+}
+
+.navbar-brand{
+	font-size: 32px;
+	font-weight: bold;
+	font-family: 'Alatsi', sans-serif;
+}
+
+#logoF{
+	color: black;
+	padding: 5px;
+	background-color: #A5F;
+}
+#logoJ{
+	color:  #A5F;
+	padding: 5px;
+	background-color: black;
+}
+
+.card{
+	margin-top: 32px;
+}
