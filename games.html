@@ -7,6 +7,9 @@
 
 		<!-- Bootstrap CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet"> 
+		<link href="/index.css" rel="stylesheet">
 
 		<title>Fluffy Jambe</title>
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -17,36 +20,67 @@
 	</head>
 	<body>
 
-		<nav class="navbar navbar-expand-sm navbar-light bg-light">
+		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 			<div class="container-fluid">
-			  <a class="navbar-brand" href="#">Navbar</a>
-			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			  </button>
-			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-				  <a class="nav-link active" aria-current="page" href="#">Home</a>
-				  <a class="nav-link" href="#">Features</a>
-				  <a class="nav-link" href="#">Pricing</a>
-				  <li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" >
-					  Quick Links
-					</a>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					  <li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
-					  <li><hr class="dropdown-divider"></li>
-					  <li><a class="dropdown-item" href="#">Something else here</a></li>
+				<a class="navbar-brand" href="/index.html"><span  id="logoF">Fluffy</span><span id="logoJ">Jambe</span></a>
+			  	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+			  	</button>
+			  	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="/index.html">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/games.html">Games</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/index.html">Recipies</a>
+						</li>
+						<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Quick Links
+						</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
+							</ul>
+						</li>
 					</ul>
-				  </li>
-				</div>
-			  </div>
+			  	</div>
 			</div>
-		  </nav>
+		</nav>
 
-
-	
-		<h1>Hello, world!</h1>
-
+		<div class="container">
+			<div class="row">
+				<div class="col"> </div>
+				<div class="col-12 col-md-11 col-lg-10">
+					<div class="card text-center text-white bg-dark" >
+						<div class="card-body">
+							<h5 class="card-title"><a href="https://beziergames.com/products/one-night-ultimate-werewolf">Where Wulf</a></h5>
+							<h6 class="card-subtitle mb-2 text-muted">a killer party game</h6>
+							<div class="row">
+								<div class="col-12 col-md-6">
+									<img src="/wherewulf.jpg" alt="" width=100% >
+								</div>
+								<div class="col">
+									<p class="card-text">A recreation of my favorite card game, 
+										<a href="https://beziergames.com/products/one-night-ultimate-werewolf">One Night Ultimate Werewolf</a>. 
+										Full credit to Bezier Games. I wanted to make a slightly faster version of the game didn't require everyone closing their eyes. My version instead displays hidden information to an individual's phone. I took some artistic liberties but I beleive the original 
+										<a href="https://cdn.shopify.com/s/files/1/0740/4855/files/ONUW_rules-updated_for_BGG.pdf">rules</a> 
+										
+										are still intact and anyone who has played the original could play my version with minimal issues.
+									</p>
+									<p class="card-text">
+										Where Wulf was created with a React front-end that talks to my REST API that was developed in Java using Spring. Both parts are hosted on Heroku. I still have a lot of ideas for this project. I would like to setup a database to store the outcome of games so that I could see stats. I also would like to add some of the expantion packs.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col"></div>
+				</div>
+		  </div>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
