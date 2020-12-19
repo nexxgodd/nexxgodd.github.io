@@ -27,3 +27,50 @@ a{
 .card{
 	margin-top: 32px;
 }
+
+.container-fluid{
+	padding-left: .75rem;
+	padding-right: .75rem;
+}
+
+/* ul {
+	list-style-type: none;
+	padding: 0;
+} */
+
+.accordion-button:focus {
+	border: 1px solid rgba(0,0,0,.125);
+    box-shadow: 0 0 0 0 ;
+}
+
+.accordion-button.collapsed:focus {
+	border-bottom: 0;
+}
+
+.accordion-button{
+	color: black;
+	background-color: #A5F;
+}
+
+.accordion-button:not(.collapsed){
+	color: black;
+	background-color: #A5F;
+}
+
+.accordion-button:not(.collapsed)::after{
+	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+}
+/* rgb(170, 85, 255 */
+
+ul {
+	list-style-position: inside;
+  }
+
+li.col-6{
+	/* padding: 0; */
+	/* padding-right:30px; */
+}
+
+li::marker{
+	co
+}
