@@ -62,15 +62,14 @@ a{
 }
 /* rgb(170, 85, 255 */
 
-ul {
+ul{
 	list-style-position: inside;
-  }
-
-li.col-6{
-	/* padding: 0; */
-	/* padding-right:30px; */
 }
 
-li::marker{
-	co
+textarea{
+	width: 100%;
+	height: 250px;
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
+

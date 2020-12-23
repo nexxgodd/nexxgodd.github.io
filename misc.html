@@ -32,13 +32,13 @@
 							<a class="nav-link" href="/index.html">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="/games.html">Games</a>
+							<a class="nav-link" href="/games.html">Games</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/recipies.html">Recipies</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/misc.html">Misc</a>
+							<a class="nav-link active" aria-current="page" href="/misc.html">Misc</a>
 						</li>
 						<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,25 +59,22 @@
 				<div class="col-12 col-md-10 col-lg-8">
 					<div class="card text-center text-white bg-dark" >
 						<div class="card-body">
-							<h5 class="card-title"><a href="https://beziergames.com/products/one-night-ultimate-werewolf">Where Wulf</a></h5>
-							<h6 class="card-subtitle mb-2 text-muted">a killer party game</h6>
-							<div class="row">
-								<div class="col-12 col-md-6">
-									<img src="/wherewulf.jpg" alt="" width=100% >
+							<h5 class="card-title">Recipe Card Maker</h5>
+							<h6 class="card-subtitle mb-2 text-muted">Use code to write code</h6>
+							<p class="card-text">
+								Please enter your recipe. First line should be the title followed by ingredients (each on their own line). Final line should be directions.
+							
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<textarea id="recInput"></textarea>
+										<button type="button" class="btn btn-secondary" onclick="formatRecipe()">Convert to HTML</button>
+									</div>
+									<div class="col">
+										<textarea id="recOutput"></textarea>
+										<button type="button" class="btn btn-secondary" onclick="copyOutput()">Copy Text</button>
+									</div>
 								</div>
-								<div class="col">
-									<p class="card-text">A recreation of my favorite card game, 
-										<a href="https://beziergames.com/products/one-night-ultimate-werewolf">One Night Ultimate Werewolf</a>. 
-										Full credit to Bezier Games. I wanted to make a slightly faster version of the game didn't require everyone closing their eyes. My version instead displays hidden information to an individual's phone. I took some artistic liberties but I beleive the original 
-										<a href="https://cdn.shopify.com/s/files/1/0740/4855/files/ONUW_rules-updated_for_BGG.pdf">rules</a> 
-										
-										are still intact and anyone who has played the original could play my version with minimal issues.
-									</p>
-									<p class="card-text">
-										Where Wulf was created with a React front-end that talks to my REST API that was developed in Java using Spring. Both parts are hosted on Heroku. I still have a lot of ideas for this project. I would like to setup a database to store the outcome of games so that I could see stats. I also would like to add some of the expantion packs.
-									</p>
-								</div>
-							</div>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -86,6 +83,7 @@
 		  </div>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+		<script src="/index.js"></script>
 
 	</body>
 </html>
