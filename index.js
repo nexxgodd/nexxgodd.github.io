@@ -1,9 +1,12 @@
 function formatRecipe(){
 	let inbox = document.getElementById("recInput");
 	let lines = inbox.value.split('\n');
-	if(lines.length<3){ alert("Too short");return;} //escape small list
+	if(lines.length<3){ 
+		document.getElementById("recOutput").value="The input must contain at least 3 lines.";
+		return;
+	} //escape small list
 	let title = lines.shift();
-	let title2 = title.replace(/\s/g, "");
+	let title2 = title.replace(/\s|’|\./g, "");
 	let direction = lines.pop();
 	
 	let ingout='';
@@ -21,3 +24,4 @@ function copyOutput() {
 	document.getElementById("recOutput").select();
 	document.execCommand("copy");
   } 
+
