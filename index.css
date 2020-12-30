@@ -78,3 +78,47 @@ textarea{
 .accordion-body p:nth-child(odd){
 	background: #CCC
 }
+
+
+
+/*************************for peg game*************************/
+#peg-container span{
+	padding: 0 35px 0 0;
+}
+.peg-hole{
+	border-radius: 20px;
+	border: none;
+
+	color: #fff;
+	background: #A5F;
+	animation: none;
+
+	margin: 2px;
+	height: 38px;
+	width: 38px;
+}
+
+/* .peg-hole:hover:not(:disabled){
+	background: #6c757d;
+} */
+
+.peg-hole.empty{
+	color: #A5F;
+}
+
+.peg-hole.possible{
+	background: #6c757d;
+	color: #6c757d;
+}
+
+.peg-hole:focus{
+	outline:none;
+}
+
+.peg-hole.selected{
+	box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 0.25);
+}
+
+button.peg-hole:active{
+	padding:0;
+}
