@@ -2,18 +2,25 @@
 
 //setup pegboard
 var pegboard =document.getElementById("peg-container");
-var holes=[];
-var selected='';
+var holes;
+var selected;
 var checkArray=[[-1,-1],[-1,0],[0,-1],[0,1],[1,0],[1,1]];
 var MAX=4;
-var possibles=[];
-var score=0;
+var possibles;
+var score;
 
 if(pegboard){
 	setupPegBoard();
 }
 
 function setupPegBoard(){
+
+	holes=[];
+	selected='';
+	possibles=[];
+	score=0;
+
+
 	let out ='';
 	for(let i=0;i<=MAX;i++){
 		for(let j=0;j<=i;j++){
