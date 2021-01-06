@@ -18,7 +18,7 @@ function setupPegBoard(){
 	holes=[];
 	selected='';
 	possibles=[];
-	score=0;
+	score=14;
 
 
 	let out ='';
@@ -118,7 +118,7 @@ function selectPeg(name){
 		//alert(possibles+" "+selected)
 		deselect();
 
-		score+=1;
+		score-=1;
 		document.getElementById("pegScore").innerHTML=score;
 
 	}
