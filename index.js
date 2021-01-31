@@ -25,5 +25,5 @@ function copyOutput() {
 	document.execCommand("copy");
   } 
 
-}//		git commit -m ""		git push origin main
+//		git commit -m ""		git push origin main
 
