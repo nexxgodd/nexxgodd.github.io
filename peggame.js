@@ -122,3 +122,4 @@ function selectPeg(name){
 		document.getElementById("pegScore").innerHTML=score;
 
 	}
+}
