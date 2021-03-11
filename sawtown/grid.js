@@ -1,6 +1,6 @@
 var grid=[];
 var gridHeight,gridWidth;
-var woodCount=1500;
+var woodCount=0;//1500;
 var counts={tree:0,axe:0,saw:0,fire:0}
 
 function setupGrid(width,height,leftBuffer,topBuffer){

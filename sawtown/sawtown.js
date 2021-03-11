@@ -350,9 +350,9 @@ function drawMenu(g,fps){
     g.fillRect(...menuBox.drawArray());
 
 	drawText(g, fps, false, 3, 3);
-	drawText(g, mouse.gridX+","+mouse.gridY, false, 45, 3);
+	//drawText(g, mouse.gridX+","+mouse.gridY, false, 45, 3);
 	drawText(g, " Logs: "+woodCount, false, 0, 40);
-	drawText(g, shopArray[0].count, false, 120, 3);
+	//drawText(g, shopArray[0].count, false, 120, 3);
 
 	g.fillStyle = COLOR.menuDarkGray;
 	g.fillRect(...shopBox.drawArray());	
