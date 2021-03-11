@@ -5,5 +5,10 @@
 		"pkgs",
 		"preconnect",
 		"ungreased"
+	],
+	"cSpell.ignoreWords": [
+		"ogxx",
+		"sawtown",
+		"windowbuffer"
 	]
 }

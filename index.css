@@ -16,12 +16,12 @@ a{
 #logoF{
 	color:  #A5F;
 	padding: 5px;
-	background-color: black;
+	/* background-color: black; */
 }
 #logoJ{
 	color:  #A5F;
 	padding: 5px;
-	background-color: black;
+	/* background-color: black; */
 }
 
 .card{
@@ -122,3 +122,8 @@ textarea{
 button.peg-hole:active{
 	padding:0;
 }
+
+
+
+
+
