@@ -47,6 +47,7 @@
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
 								<li><a class="dropdown-item" href="/sawtown.html">Saw Town</a></li>
+								<li><a class="dropdown-item" href="/tttoes.html">Tic-Tac-Toe</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -63,12 +64,112 @@
 
 					<div class="card text-center text-white bg-dark" >
 						<div class="card-body">
+							<h5 class="card-title">Bingo Card Maker</h5>
+							<h6 class="card-subtitle mb-2 text-muted">Bingo</h6>
+							<h6 class="card-subtitle mb-2 text-muted text-center">June 2021</h6>
+							<p class="card-text">
+								Generate random bingo cards given a list of possible options.
+								<br>
+								Add a list of choices separated on to new lines and randomize to your heart's content. 
+							
+								<div class="row">
+									<div class="col-12 col-md-4">
+										Possibilities
+										<textarea id="bingoInput" placeholder="Item1&#10;Item2&#10;Item3&#10;Item4&#10;Item5&#10;...&#10;..&#10;."></textarea>
+										<button type="button" class="btn btn-secondary" onclick="makeNew()">New Card</button>
+										<br>
+									</div>
+									<div class="col">
+										
+										<table >
+											<tr>
+											  <th>B</th>
+											  <th>I</th>
+											  <th>N</th>
+											  <th>G</th>
+											  <th>O</th>
+											</tr>
+											<tr>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											</tr>
+											<tr>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											</tr>
+											<tr>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td id="middle">Free<br>Space</td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											</tr>
+											<tr>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											</tr>
+											<tr>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											  <td class="bingo-cell"></td>
+											</tr>
+										  </table>
+
+									</div>
+								</div>
+							</p>
+						</div>
+					</div>
+
+
+					<div class="card  text-white bg-dark" >
+						<div class="card-body">
+							<h5 class="card-title text-center">Twitch Merp</h5>
+							<h6 class="card-subtitle mb-2 text-muted text-center">June 2021</h6>
+							<p class="card-text">
+								<ul class="fluff-list">
+									<li>This is a bookmarklet I made for Twitch.</li>
+									<li>Flashes screen when someone speaks in chat and plays sound every 30 seconds.</li>
+									<li>Creates mute and pause buttons to the left of Like and Notification buttons under the stream.</li>
+									<li>Mute button stops sound while the pause button stops all activity.</li>
+									<li>Activation is tied to the chat scrolling. This means it wont activate until chat reaches the bottom of the screen and will activate if you scroll chat.</li>
+									<br>
+									Known issues
+									<li>Doesn't work if hype train (rare event) is active on page.</li>
+									<li>Switching pages on twitch can break things. Refreshing will fix this.</li>
+									<li>Not recommended for highly active chat.</li>
+									Let me know if you have any other issues.
+									<br>
+									<br>
+									How to use
+									<li>Save the following code as a new bookmark and click on said bookmark while on the twitch page you want merps for.</li>
+									<li>Refreshing the page will remove all functionality.</li>
+								</ul>
+								<textarea class="code-dump" wrap="off">javascript:(function(){var merp=new Audio('https://bigsoundbank.com/UPLOAD/mp3/2059.mp3');var lastMerp=Number.MAX_SAFE_INTEGER;var isPause=false;var spacer=30000;var cBox=document.getElementsByClassName("simplebar-scroll-content")[2];var cBoxColor=cBox.style.backgroundColor;playMerp=()=>{if(isPause){return;}let nd=new Date();if(nd-lastMerp>spacer){lastMerp=nd;merp.play();}cBox.style.backgroundColor="orange";setTimeout(()=>{cBox.style.backgroundColor=cBoxColor;},250);};muteMerp=()=>{lastMerp=document.getElementById("merp-mute").checked?Number.MAX_SAFE_INTEGER:0;};pauseMerp=()=>{isPause=document.getElementById("merp-pause").checked;};cBox.addEventListener("scroll",playMerp);let buttonHole=document.getElementsByClassName("follow-btn__follow-notify-container")[0].children[0];buttonHole.innerHTML='<input type="checkbox" id="merp-mute" onclick="muteMerp()" checked>Mute</input><input type="checkbox" id="merp-pause" onclick="pauseMerp()">Pause</input>'+buttonHole.innerHTML;})();</textarea>  
+							</p>
+						</div>
+					</div>
+
+
+					<div class="card text-center text-white bg-dark" >
+						<div class="card-body">
 							<h5 class="card-title">Breadth-First Snowman</h5>
 							<h6 class="card-subtitle mb-2 text-muted">January 2021</h6>
 							<p class="card-text">
 								I'm working on a weird game idea with snowmen. To detect if the snowman could move to the location of the cursor I wrote a breadth first search. For debugging purposes I highlighted every location searched.
 							</p>
-							<img src="/smanSearch.PNG" alt="" width=100% >
+							<img src="/resources/smanSearch.PNG" alt="" width=100% >
 						</div>
 					</div>
 

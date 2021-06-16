@@ -23,7 +23,82 @@ function formatRecipe(){
 function copyOutput() {
 	document.getElementById("recOutput").select();
 	document.execCommand("copy");
-  } 
+} 
+
+///bingo
+
+var arr=[];
+var td=document.getElementsByClassName("bingo-cell");
+
+function makeNew(){
+	buildArr();
+	mixArr();
+	for(let i=0;i<24;i++){
+		td[i].innerHTML=arr[i];
+	}
+}
+
+function mixArr() {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
+function buildArr2(){
+	arr= [
+		"breath of the wild 2",
+		"metroid prime 4",
+		"metroid prime trilogy",
+		"2d metroid",
+		"new smash character",
+		"animal crossing update",
+		"new mario kart",
+		"mario does a sport",
+		"mario rpg",
+		"3d mario game",
+		"luigi's new mansion",
+		"new pokemon announced",
+		"pokemon arceus",
+		"indie game montage",
+		"donkey kong goes back to the country",
+		"epic yarn",
+		"kirby eats a thing",
+		"yoshi eats a thing",
+		"Shigeru Miyamoto wearing a funny hat",
+		"switch pro",
+		"mother 4",
+		"star fox",
+		"n64 games added to switch online",
+		"xenoblade",
+		"fire emblem",
+		"splatoon 3",
+		"pikmin",
+		"kid icarus",
+		"f-zero",
+		"wario ware",
+		"monster hunter",
+		"harvest moon",
+		"new warriors game",
+		"ace attorney",
+		"ring fit 2",
+		"new peripheral",
+		"golden sun",
+		"bayonetta 3",
+		"new mobile game",
+		"new online support"
+	];
+}
+
+function buildArr(){
+	arr=document.getElementById("bingoInput").value.split("\n");
+}
+
+
+
+
+
+
 
 //		git commit -m ""		git push origin main
 

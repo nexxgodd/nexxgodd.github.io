@@ -151,7 +151,7 @@ function hasLoaded(){
     if (true){ // Check to see if all info is loaded
         clearInterval(gameInterval);
         // startGame();
-			gameInterval = setInterval(runGame, 15);
+			gameInterval = setInterval(runGame, 30);
     }
 }
 

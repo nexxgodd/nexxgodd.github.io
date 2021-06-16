@@ -1,5 +1,5 @@
 body{
-	background-image: url("/bg.jpg");
+	background-image: url("/resources/bg.jpg");
 	background-size: cover;
 }
 
@@ -68,6 +68,10 @@ ul{
 
 }
 
+.fluff-list{
+	padding: 0 100px;
+}
+
 textarea{
 	width: 100%;
 	height: 250px;
@@ -75,8 +79,30 @@ textarea{
 	margin-bottom: 10px;
 }
 
+.code-dump{
+	height: 3em;
+	word-wrap: break-word;	
+	word-break:break-all;
+	/* text-wrap:unrestricted; */
+}
+
 .accordion-body p:nth-child(odd){
 	background: #CCC
+}
+
+
+
+
+
+input[type=text] {
+	width: 100%;
+}
+
+.btn-sexy{
+	color: white;
+	background-color: #A5F; 
+	border-color: #A5F;
+
 }
 
 
@@ -124,6 +150,92 @@ button.peg-hole:active{
 }
 
 
+/*************************for ttt*************************/
+
+.ttt-hole{
+	border-radius: 10px;
+	border: none;
+
+	color: #A5F;
+	background: #A5F;
+	animation: none;
+
+	
+	display: inline-block;
+	vertical-align: top;
+	
+
+	margin: 3px;
+	padding: 4px;
+	height: 64px;
+	width: 64px;
+
+	font-weight: bold;
+}
+
+.ttt-hole.done{
+	background: #6c757d;
+	color: #fff;
+
+}
+
+.tabs{
+	width:50%
+}
+.tabs2{
+	width: 100%;
+}
+.tabs2:not(:disabled){
+	background: #6c757d;
+	color: white;
+}
+
+input{
+	border: none;
+}
+
+.chat-card{
+	margin: 0;
+
+	height: 200px;
+}
+
+/* .hidden{
+	display: none;
+} */
+
+#chat-input{
+    box-shadow: 0 0 0 0 ;
+}
 
 
 
+/*************************for bingo*************************/
+
+table{
+	width:100%;
+	border-style: solid;
+	/* background-color: black; */
+	
+}
+
+th{
+	width: 20%;
+	/* border-style: solid; */
+	height: 50px;
+	background-color: gray;
+	font-size:30px;
+}
+
+td{
+	border: 2px solid gray;
+	height: 100px;
+	text-align: center;
+	font-weight: bold;
+	/* background-color: white; */
+}
+
+#middle{
+	background-color: gray;
+	color:white;
+}
