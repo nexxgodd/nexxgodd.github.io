@@ -66,7 +66,128 @@
 					
 
 
-					WIP
+					<div class="card text-center text-white bg-dark" >
+						<div class="card-body">
+							<h5 class="card-title">Tic-Tac-Toe</h5>
+
+							<p class="card-text "> 
+								
+								<div class="row" id="ttt-setup-container">
+
+									<div class="col"></div>
+
+									<div class="col-5 col-sm-4">
+										<!-- <img src="/favicon.png" alt="" width=100% > -->
+
+										<label for="name">Name</label>
+										<input type="text" id="name" placeholder="Enter a name">
+										<div id="name-bad" style="color:red; display: none;">Must provide a name!</div>
+									</div>
+									<div class="col-5 col-sm-4">
+									<!-- <img src="/favicon.png" alt="" width=100% > -->
+
+										<label for="private">Private game?</label>
+										<input type="checkbox" id="private" onclick="setPrivate()">
+										<!-- <br> -->
+										<div id="private-info"  style="display: none;">
+
+											<label for="private">Host?</label>
+											<input type="checkbox" id="host" onclick="setHost()">
+											
+											<div id="code-div">
+												<input type="text" id="codebox" class="text-input" placeholder="Room Code">
+												<div  id="code-bad" style="color:red; display: none;">Code not valid!</div>
+											</div>
+										</div>
+										
+										<br>
+									</div>
+
+									<div class="col"></div>
+									<div>
+										<br>
+										<!-- button -->
+										<button id="join-btn" class="btn btn-sexy" onclick="wip(event)">Join Game</button>
+									</div>
+								</div>
+
+								<br>
+
+								<!-- the goods -->
+								<div class="row" id="ttt-container" style="display: none;">
+
+									<div class="col"></div>
+									<!-- ttt -->
+									<div class="col-12 col-md-5">
+										<h5 class="card-title">Code: <span id="room-code"></span></h5>
+										<h5 class="card-title">You are: <span id="XorO"></span></h5>
+										<div>
+											<button id="ttt0" type="button" class="ttt-hole" onclick="selectT(0)">
+											<button id="ttt1" type="button" class="ttt-hole" onclick="selectT(1)">
+											<button id="ttt2" type="button" class="ttt-hole" onclick="selectT(2)">
+										</div>
+										<div>
+											<button id="ttt3" type="button" class="ttt-hole" onclick="selectT(3)">
+											<button id="ttt4" type="button" class="ttt-hole" onclick="selectT(4)">
+											<button id="ttt5" type="button" class="ttt-hole" onclick="selectT(5)">
+										</div>
+										<div>
+											<button id="ttt6" type="button" class="ttt-hole" onclick="selectT(6)">
+											<button id="ttt7" type="button" class="ttt-hole" onclick="selectT(7)">
+											<button id="ttt8" type="button" class="ttt-hole" onclick="selectT(8)">
+										</div>
+										<br>
+											<!-- ⬤⛝ -->
+									</div>
+									<!-- chat -->
+									<div class="col-12 col-md-5">
+
+										<ul class="nav nav-tabs" id="myTab" role="tablist">
+											<li class="nav-item tabs" role="presentation">
+											  <button class="nav-link tabs2 active" id="local-tab" data-bs-toggle="tab" data-bs-target="#local" type="button" role="tab" aria-controls="local" aria-selected="true">Local Chat</button>
+											</li>
+											<li class="nav-item tabs" role="presentation">
+											  <button class="nav-link tabs2" id="global-tab" data-bs-toggle="tab" data-bs-target="#global" type="button" role="tab" aria-controls="global" aria-selected="false">Global Chat</button>
+											</li>
+										</ul>
+										<div class="card chat-card text-dark" >
+											<div class="tab-content" id="myTabContent">
+												<div class="tab-pane fade show active" id="local" role="tabpanel" aria-labelledby="local-tab">
+													
+												</div>
+												
+												<div class="tab-pane fade" id="global" role="tabpanel" aria-labelledby="global-tab">
+												
+												</div>
+												
+												
+											</div>
+										</div>
+										
+										<form onsubmit="sendChat(event)" autocomplete="off">
+											<div class="input-group mb-3">
+												<input type="text" class="form-control" id="chat-input" placeholder="Chat" >
+												<button class="btn btn-secondary" type="submit" >Submit</button>
+											  </div>
+										</form>
+										  
+
+
+
+
+
+
+									</div>
+									<div class="col"></div>
+
+								</div>
+								
+								
+							</p>
+
+							
+						</div>
+					</div>
 
 					
 					

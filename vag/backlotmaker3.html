@@ -1,0 +1,243 @@
+<html>
+	<head>
+		<h1 id='ch2_title'>Backlot Descriptor</h1>
+
+		<script type="text/javascript">
+			var output = '';
+			var listing = '';
+			function handleClick(){
+				output = '';
+				listing = '';
+
+				printShit("c1");//nav
+				printOne("sun");
+
+				for(var i=3;i<7;i++){
+					printShit("c"+i);
+				}
+
+				printOne("cd");
+
+				for(var i=8;i<19;i++){
+					printShit("c"+i);
+				}
+
+				printOne("hc");
+				output+=document.getElementById("interior").value.toLowerCase() + " " + document.forms["myForm"]["seat"].value + " seats, ";
+
+				printShit("c20");
+				printOne("pseat");
+				printShit("c22");
+				printShit("c23");
+
+				if(document.getElementById("sense1").checked && document.getElementById("sense2").checked){
+					output+="front and rear sensors, ";
+					listing+="Front Sensors\rRear Sensors\r";
+				}
+				else{
+					printOne("sense");
+				}
+
+				for(var i=25;i<29;i++){
+					printShit("c"+i);
+				}
+
+				if(document.getElementById("lw1").checked && document.getElementById("lw2").checked){
+					output+="power locks and windows, ";
+					listing+="Power Locks\rPower Windows\r";
+				}
+				else{
+					printOne("lw");
+				}
+
+				printOne("slid");
+
+				for(var i=31;i<37;i++){
+					printShit("c"+i);
+				}
+
+				printOne("mir");
+
+				for(var i=38;i<43;i++){
+					printShit("c"+i);
+				}
+
+				printOne("run");
+
+				if(document.getElementById("hook1").checked && document.getElementById("hook2").checked){
+					output+="front and rear tow hooks, ";
+					listing+="Front Tow Hooks\rRear Tow Hook\r";
+				}
+				else{
+					printOne("hook");
+				}
+
+				for(var i=45;i<56;i++){
+					printShit("c"+i);
+				}
+				printOne("bed");
+				printShit("c57");
+
+				//engine
+				output += "and a " + document.getElementById("engine").value + " Engine.";
+
+				document.getElementById("desc").innerHTML = output;
+				document.getElementById("desc2").innerHTML = listing;
+			}
+
+			function printShit(idtag){
+				var cur = document.getElementById(idtag);
+				if(cur.checked){
+					var curs = cur.value.split('|');
+					output += curs[0];
+					listing += curs[1]+'\r';
+				}
+
+			}
+			function printOne(idtagStart){
+				var cur = document.getElementById(idtagStart+'1');
+				if(cur.checked){
+					var curs = cur.value.split('|');
+					output += curs[0];
+					listing += curs[1]+'\r';
+				}
+				else{
+					cur = document.getElementById(idtagStart+'2');
+					if(cur.checked){
+						var curs = cur.value.split('|');
+						output += curs[0];
+						listing += curs[1]+'\r';
+					}
+				}
+
+			}
+		</script>
+		
+	</head>
+	<body>
+		<form id = "myForm" action="JavaScript:handleClick()">
+			<input type="reset" value="Clear All"><br><br>
+			Interior Color:
+			<input type="text" id="interior" value="">
+			<label><input type="radio" name="seat" value="leather">Leather</label>
+			<label><input type="radio" name="seat" value="cloth" checked>Cloth</label>
+			<label><input type="radio" name="seat" value="vinyl">Vinyl</label>
+			<br><br><br>
+			Engine:
+			<input type="text" size="40" id="engine" value="">
+			<br><br><br>
+			
+			<table border="1" id="tablestuff">
+				<tr>
+					<td><label><input type="checkbox" id='c35' value="3rd row seats, |3rd Row Seats">3rd Row Seat</label></td>
+					<td><label><input type="checkbox" id='cd2' value="single CD player, |Single CD">Single CD</label>
+						<label><input type="checkbox" id='cd1' value="6 CD changer, |6 Disc Changer">6 Disc</label>
+						<label><input type="checkbox" id='c9' value="cassette player, |Cassette Player">Cass</label></td>
+					<td><label><input type="checkbox" id='c15' value="adaptive terrain controls, |Adaptive Terrain Control">Adaptive Terrain Control</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c41' value="adjustable pedals, |Adjustable Pedals">Adjustable Pedals</label></td>
+					<td><label><input type="checkbox" id='c8' value="AM/FM radio, |AM/FM Radio">AM/FM</label>
+						<label><input type="checkbox" id='c6' value="satellite radio, |Satellite Radio"><b>Satellite Radio</b></label></td>
+					<td><label><input type="checkbox" id='c10' value="auxiliary input, |Auxiliary Input">AUX Input</label>
+						<label><input type="checkbox" id='c11' value="USB port, |USB Port">USB</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='bed1' value="bed liner, |Bed Liner">Bed Liner</label>
+						<label><input type="checkbox" id='bed2' value="bed mat, |Bed Mat">Mat</label>
+						<label><input type="checkbox" id='c57' value="bed cover, |Bed Cover">Cover</label></td>
+					<td><label><input type="checkbox" id='c50' value="bed rails, |Bed Rails">Bed Rails</label>
+						<label><input type="checkbox" id='c54' value="headache rack, |Headache Rack">Headache Rack</label></td>
+					<td><label><input type="checkbox" id='c36' value="blind spot indicator, |Blind Spot Indicator"><b>Blind Spot</b> (Mirrors)</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c4' value="Bluetooth, |Bluetooth"><b>Bluetooth</b></label>
+						<label><input type="checkbox" id='c5' value="OnStar, |OnStar">OnStar</label></td>
+					<td><label><input type="checkbox" id='c17' value="dual climate controls, |Dual Climate Controls">Dual Climate</label>
+						<label><input type="checkbox" id='c18' value="dual-zone climate controls, |Dual-Zone Climate Controls">Dual Zone</label></td>
+					<td><label><input type="checkbox" id='c45' value="fog lights, |Fog Lights">Fog Lights</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='hook1' value="front tow hooks, |Front Tow Hooks">Front Hooks</label>
+						<label><input type="checkbox" id='hook2' value="rear tow hook, |Rear Tow Hook">Rear</label></td>
+					<td><label><input type="checkbox" id='sense1' value="front sensors, |Front Sensors">Front Sensor</label>
+						<label><input type="checkbox" id='sense2' value="rear sensors, |Rear Sensors"><b>Rear</b></label></td>
+					<td><label><input type="checkbox" id='c32' value="universal garage opener, |Universal Garage Opener">Garage Opener</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c51' value="gooseneck ball, |Gooseneck Ball">Gooseneck</label>
+						<label><input type="checkbox" id='c52' value="5th wheel, |5th Wheel">5th Wheel</label></td>
+					<td><label><input type="checkbox" id='c47' value="grill guard, |Grill Guard">Grill Guard</label></td>
+					<td><label><input type="checkbox" id='c38' value="heated mirrors, |Heated Mirrors">Heated Mirrors</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='hc2' value="heated |Heated Seats"><b>Heated Seats</b></label>
+						<label><input type="checkbox" id='hc1' value="heated/cooled |Heated/Cooled Seats"><b>Cooled</b></label></td>
+					<td><label><input type="checkbox" id='c20' value="heated rear seats, |Heated Rear Seats">Heated Rear Seats</label></td>
+					<td><label><input type="checkbox" id='c14' value="heated steering wheel, |Heated Steering Wheel">Heated Steering Wheel</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c39' value="integrated turn signals, |Integrated Turn Signals">Integrated Turn Signal</label></td>
+					<td><label><input type="checkbox" id='c46' value="luggage rack, |Luggage Rack">Luggage Rack</label></td>
+					<td><label><input type="checkbox" id='c22' value="memory group, |Memory Group">Memory Group</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c1' value="navigation, |Navigation"><b>Navigation</b></label></td>
+					<td><label><input type="checkbox" id='c13' value="power adjustable steering wheel, |Power Adjustable Steering Wheel">Power Adj. Steering Wheel</label></td>
+					<td><label><input type="checkbox" id='pseat2' value="power driver seat, |Power Driver Seat">Power Driver Seat</label>
+						<label><input type="checkbox" id='pseat1' value="power seats, |Power Seats">Pass</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='mir2' value="power adjustable mirrors, |Power Adjustable Mirrors">Power Mirrors</label>
+						<label><input type="checkbox" id='mir1' value="power folding mirrors, |Power Folding Mirrors">Folding</label></td>
+					<td><label><input type="checkbox" id='c31' value="power rear doors, |Power Rear Doors">Power Rear Doors (Van)</label></td>
+					<td><label><input type="checkbox" id='c40' value="power extending mirrors, |Power Extending Mirrors">Power Extending Mirrors</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c34' value="power folding rear seats, |Power Folding Rear Seats">Power Fold Rear Seats</label></td>
+					<td><label><input type="checkbox" id='c33' value="power lift gate, |Power Lift Gate">Power Lift Gate</label></td>
+					<td><label><input type="checkbox" id='lw2' value="power windows, |Power Windows">Power Windows</label>
+						<label><input type="checkbox" id='lw1' value="power locks, |Power Locks">Locks</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='slid2' value="sliding rear windows, |Sliding Rear Windows">Rear Window</label>
+						<label><input type="checkbox" id='slid1' value="power sliding rear windows, |Power Sliding Rear Windows">Power</label></td>
+					<td><label><input type="checkbox" id='sun2' value="power sunroof, |Power Sunroof"><b>Power Sunroof</b></label>
+						<label><input type="checkbox" id='sun1' value="panoramic sunroof, |Panoramic Sunroof">Pano</label></td>
+					<td><label><input type="checkbox" id='c25' value="push button start, |Push Button Start">Push Button Start</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c12' value="rear seat entertainment, |Rear Seat Entertainment">Rear Entertainment</label></td>
+					<td><label><input type="checkbox" id='c3' value="rear DVD system, |Rear DVD System"><b>Rear DVD</b></label></td>
+					<td><label><input type="checkbox" id='c23' value="rear camera, |Rear Camera"><b>Rear Camera</b></label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c48' value="roof lights, |Roof Lights">Roof Lights</label></td>
+					<td><label><input type="checkbox" id='c27' value="remote entry, |Remote Entry">Rem Entry</label>
+						<label><input type="checkbox" id='c28' value="keypad entry, |Keypad Entry">Keypad</label>
+						<label><input type="checkbox" id='c26' value="remote start, |Remote Start">Start</label></td>
+					<td><label><input type="checkbox" id='run2' value="running boards, |Running Boards">Running Boards</label>
+						<label><input type="checkbox" id='run1' value="power running boards, |Power Running Boards">Power</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c16' value="steering wheel controls, |Steering Wheel Controls">Steering Wheel Controls</label></td>
+					<td><label><input type="checkbox" id='c49' value="tailgate step, |Tailgate Step">Tailgate Step</label></td>
+					<td><label><input type="checkbox" id='c55' value="tool box, |Tool Box">Tool Box</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='c53' value="trailer hitch receiver, |Trailer Hitch Receiver">Trailer Hitch</label></td>
+					<td><label><input type="checkbox" id='c42' value="upfitter switches, |Upfitter Switches">Upfitter Switches</label></td>
+				</tr>
+
+<!--			<tr>
+					<td><label><input type="checkbox" id='c' value=""></label></td>
+					<td><label><input type="checkbox" id='c' value=""></label></td>
+					<td><label><input type="checkbox" id='c' value=""></label></td>
+				</tr>
+-->			</table>
+			<br><input type="submit" value="Write"><br>
+			<textarea id="desc" rows="7" cols="65"></textarea><br>
+			<textarea id="desc2" rows="7" cols="65"></textarea>
+		</form>		
+	</body>
+</html>

@@ -14,7 +14,7 @@ function setHost(){
 	toggleDisplay("code-div",!host);
 }
 
-//toggle visable space
+//toggle visible space
 function setConnected(isConnected) {
 	toggleDisplay("ttt-setup-container",!isConnected);
 	toggleDisplay("ttt-container",isConnected);
@@ -24,15 +24,15 @@ function toggleDisplay(id,isDisplay){
 	document.getElementById(id).style.display=isDisplay?"":"none";
 }
 
-
+var myName="";
 function connect(e) {
 	e.preventDefault();
-	let name =document.getElementById("name").value;
+	myName =document.getElementById("name").value;
 	let isPrivate =document.getElementById("private").checked;
 	let isHost=document.getElementById("host").checked;
 	let codebox =document.getElementById("codebox").value;
 
-	let rdy=name.length!==0;
+	let rdy=myName.length!==0;
 	toggleDisplay("name-bad",!rdy);
 	
 	if(isPrivate&&!isHost&&codebox.length!==4){
@@ -80,45 +80,62 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendMessage() {
-    stompClient.send("/app/request/"+code, {}, JSON.stringify({'name': 'me','content':document.getElementById("name").value}));
-}
 
-function showGreeting(message) {
-	document.getElementById("greetings").innerHTML+=
-		"<tr><td>" + message + "</td></tr>";
-		console.log(message)
-}
 
 //new game without code
 function newGame(isOpen){
 	var newSub =stompClient.subscribe('/user/queue/response', function (code) {
 		// console.log();
-		joinGame(JSON.parse(code.body).content);
+		joinGame(JSON.parse(code.body));
 		newSub.unsubscribe();
 	});
 	stompClient.send("/app/newgame",{},JSON.stringify({'name': 'me','content':isOpen?'open':'closed'}));
 }
+
+function wip(c){
+	alert("Currently out of order!");
+}
+
 var code='';
 function joinGame(c){
-	code=c;
-	document.getElementById("room-code").innerHTML=code;
+	code=c.content;
 	console.log(code);
+	document.getElementById("room-code").innerHTML=code;
+	document.getElementById("XorO").innerHTML=c.name;
 
 	stompClient.subscribe('/queue/message/'+code, function (greeting) {
-		showGreeting(JSON.parse(greeting.body).content);
+		showGreeting(JSON.parse(greeting.body),"local");
+	});
+
+	stompClient.subscribe('/queue/message', function (greeting) {
+		showGreeting(JSON.parse(greeting.body),"global");
 	});
 }
 
 function sendChat(e){
 	e.preventDefault();
 	let message = document.getElementById("chat-input");
-	document.getElementById("local").innerHTML+=message.value+"<br>";
+	let address="/app/request";
+	if(document.getElementById("local").classList.contains("active")){
+		address+='/'+code;
+	}
+	// document.getElementById("local").innerHTML+=message.value+"<br>";
+	stompClient.send(address, {}, JSON.stringify({'name': myName,'content':message.value}));
 	message.value="";
 }
 
 
 
+function showGreeting(message,id) {
+	document.getElementById(id).innerHTML+=
+		message.name+": "+message.content + "<br>";
+		//console.log(message)
+}
+
+
+// function sendMessage() {
+//     stompClient.send("/app/request/"+code, {}, JSON.stringify({'name': 'me','content':document.getElementById("name").value}));
+// }
 
 
 

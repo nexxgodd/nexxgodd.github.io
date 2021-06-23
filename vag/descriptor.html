@@ -1,0 +1,554 @@
+
+<html>
+	<head>
+		<h1 id='ch2_title'>Descriptor</h1>
+
+		<script type="text/javascript">
+			var output = '';
+			var listing = '';
+			var w=document.forms;
+			var engineT1=[	"command the road with ",
+							"control the road with ",
+							"control the roads with ",
+							"create a new path with ",
+							"create an unforgettable journey with ",
+							"cut a path through tough terrain with ",
+							"cut your way through tough terrain with ",
+							"haul heavy loads with ",
+							"make every trip an adventure with ",
+							"make your own path with ",
+							"power through all terrain with ",
+							"power through rough terrain with ",
+							"power through the toughest jobs with ",
+							"power through tough jobs and long journeys with ",
+							"power your way through rough terrain with ",
+							"power your way through the toughest jobs with ",
+							"power your way through tough jobs with ",
+							"power your way through tough terrain with ",
+							"power your way through with ",
+							"power your way to any destination with ",
+							"tackle all terrain with ",
+							"tackle heavy jobs with ",
+							"tackle heavy payloads with ",
+							"tackle the heaviest payloads with ",
+							"tackle the open road with ",
+							"tackle the toughest jobs with ",
+							"tackle the toughest terrain with ",
+							"tackle tough jobs and long journeys with ",
+							"tackle tough jobs with ",
+							"tackle tough terrain with ",
+							"take control of the open road with ",
+							"take control of the road with ",
+							"take on adventure with ",
+							"take on all terrain with ",
+							"take on heavy payloads with ",
+							"take on long journeys with ",
+							"take on rough terrain with ",
+							"take on rough trails with ",
+							"take on the adventure of a lifetime with ",
+							"take on the adventure you've been waiting for with ",
+							"take on the open road with ",
+							"take on the toughest jobs with ",
+							"take on the trip you've been waiting for with ",
+							"take on the vacation you have been waiting for with ",
+							"take on the world with ",
+							"take on tough jobs and long journeys with ",
+							"take on tough jobs with ",
+							"take on tough terrain with ",
+							"take the adventure of a lifetime with ",
+							"take the family vacation you have been waiting for with ",
+							"take the trip you have been waiting for with ",
+							"take the vacation you have been waiting for with ",
+							"tear up the trails with "];
+
+			var engineT2=[	"a ",
+							"ease thanks to the ",
+							"ease thanks to the strength of the ",
+							"ease thanks to the true strength of the ",
+							"no problem thanks to the ",
+							"the ",
+							"the dependable ",
+							"the strength of a ",
+							"the strength of the ",
+							"the true strength of a ",
+							"the true strength of the ",
+							"true strength thanks to the ",
+							"a powerful ",//hard coded 12
+							"confidence thanks to power of the ",
+							"ease thanks to the power of the ",
+							"ease thanks to the true power of the ",
+							"more than enough power thanks to the ",
+							"the power of a ",
+							"the power of the ",
+							"the power of this ",
+							"the rugged power of the ",
+							"the smooth power of the ",
+							"the true power of the ",
+							"true power thanks to the "];
+
+			var engineC1=[	"control the road with with ",
+							"create an unforgettable journey with ",
+							"cruise across the country with ",
+							"cruise around with ",
+							"cruise down the highway with ",
+							"cruise down the open road with ",
+							"cruise the country side with ",
+							"cruise the highway with ",
+							"cruise the street with ",
+							"cruise to adventure with ",
+							"enjoy a majestic ride on the open road with ",
+							"enjoy the open road with ",
+							"experience a new kind of driving with ",
+							"make every trip an adventure with ",
+							"make the adventure of a lifetime with ",
+							"tackle the open road with ",
+							"take on a new journey across the country with ",
+							"take on adventure with ",
+							"take on long journeys with ",
+							"take on the adventure of a lifetime with ",
+							"take on the adventure you've been waiting for with ",
+							"take on the black top with ",
+							"take on the open road with ",
+							"take on the streets with ",
+							"take on the trip you've been waiting for with ",
+							"take on the vacation you've been waiting for with ",
+							"take on the world with "];
+
+			var engineC2=[	"the dependable ",
+							"ease thanks to the ",
+							"a ",
+							"a ",
+							"a ",
+							"the "];
+
+			var seats=[		"buckle into ",
+							"cruise in the comfort of ",
+							"enjoy the comfort of ",
+							"enjoy the ",
+							"recover and relax in ",
+							"relax in ",
+							"relax in the comfort of ",
+							"sit back and relax in ",
+							"sit back in ",
+							"sit back in the comfort of ",
+							"stay comfortable in ",
+							"stay comfortable until you reach your destination in ",
+							"stay relaxed in ",
+							"ride in the comfort of ",
+							"keep your family comfy in ",
+							"relax in the "];
+
+			var bluetooth=[	"connect compatible devices through Bluetooth technologies",
+							"connect compatible devices through Bluetooth technologies to enjoy hands free capabilities",
+							"connect compatible devices with Bluetooth capabilities",
+							"connect compatible devices with Bluetooth capabilities to enjoy hands free capabilities",
+							"connect compatible devices with Bluetooth technologies to enjoy hands free capabilities on the go",
+							"connect compatible devices with Bluetooth to enjoy hands free capabilities",
+							"connect your devices with Bluetooth capabilities",
+							"enjoy hands free Bluetooth capabilities",
+							"enjoy hands free capabilities with Bluetooth technologies",
+							"experience a new way of driving with Bluetooth technologies",
+							"keep connected through compatible devices with Bluetooth capabilities",
+							"stay connected through Bluetooth capabilities to enjoy a hands free driving experience",
+							"stay connected through Bluetooth technologies to enjoy hands free capabilities while on the go",
+							"stay connected through compatible devices with Bluetooth capabilities",
+							"stay connected with Bluetooth capabilities to enjoy hands free capabilities on the go",
+							"stay connected with Bluetooth technologies to enjoy hands free capabilities",
+							"stay connected with compatible Bluetooth devices to enjoy hands free capabilities",
+							"stay connected with hands free Bluetooth capabilities",
+							"sync your devices with Bluetooth capabilities"];
+
+			var rearCamera=["back into tight spaces with the help of a backup camera",
+							"back into tight spaces with the help of a rear view camera",
+							"back up safely with a backup camera",
+							"back up safely with a rear camera",
+							"back up with ease thanks to the backup camera",
+							"find your way into tight parking with the help of a backup camera",
+							"navigate tight parking with a backup camera",
+							"navigate tight parking with the help of a backup camera",
+							"navigate tight parking with the help of a rear view camera",
+							"park into tight spaces thanks to the integrated rear backup camera",
+							"park with ease thanks to the backup camera",
+							"park with ease thanks to the help of a backup camera",
+							"park with ease with the help of a backup camera",
+							"squeeze into the tight places with ease thanks to the backup camera",
+							"squeeze into the tight places with ease thanks to the built in backup camera",
+							"squeeze into tight parking spots with ease thanks to the integrated backup camera",
+							"squeeze into tight parking with ease thanks to the integrated backup camera",
+							"squeeze into tight spaces with the help of a backup camera",
+							"squeeze into tight spaces with the integrated backup camera on your side",
+							"stay safe with the help of a backup camera"];
+
+			var navigation=["create a new destination with the state of the art navigation system",
+							"create a new journey with the state of the art navigation system",
+							"create a new path with the state of the art navigation system",
+							"create new destinations with the state of the art navigation system on your side",
+							"experience a new kind of travel with the state of the art navigation system",
+							"explore a new journey with the state of the art navigation system",
+							"explore new adventures with the state of the art navigation system",
+							"explore new destinations across the country with the state of the art navigation system",
+							"explore new destinations with the state of the art navigation system",
+							"explore the great outdoors with a state of the art navigation system",
+							"explore the great outdoors without getting lost thanks to the navigation system",
+							"find your way through the urban jungle with a navigation system",
+							"find your way through twisting roads thanks to the navigation system",
+							"find your way through winding trails thanks to the navigation system",
+							"find your way with ease thanks to the state of the art navigation system",
+							"find your way without complicated directions thanks to the navigation system",
+							"let the state of the art navigation system guide the way",
+							"let the state of the art navigation system guide you through your next journey",
+							"let the state of the art navigation system guide you to adventure",
+							"let the state of the art navigation system guide you to success",
+							"let the state of the art navigation system guide you to your next destination",
+							"let the state of the art navigation system keep you on track",
+							"let the state of the art navigation system lead the way",
+							"let the state of the art navigation system take the lead",
+							"navigate across the country with a state of the art navigation system keeping you on track",
+							"navigate across the country with ease thanks to the state of the art navigation system",
+							"navigate across the country with the state of the art navigation system",
+							"navigate the concrete jungle with ease thanks to the navigation system",
+							"navigate the highway with a state of the art navigation system",
+							"navigate the open road with a state of the art navigation system",
+							"navigate to new destinations with the state of the art navigation system",
+							"never miss a turn with a state of the art navigation system",
+							"never miss a turn with a state of the art navigation system guiding the way",
+							"seek new adventures with the help of the state of the art navigation system",
+							"start your adventure with the convenience of a navigation system",
+							"start your adventure with the convenient navigation system",
+							"stay on track with a state of the art navigation system",
+							"stay on track with a state of the art navigation system on your side",
+							"take on new adventures across the country with the state of the art navigation system",
+							"take on new adventures across the country with the state of the art navigation system guiding the way",
+							"take on new adventures with the state of the art navigation system on your side",
+							"take the family vacation you have been waiting for with the state of the art navigation system guiding the way",
+							"take the journey you have been waiting for with the state of the art navigation system",
+							"take the trip of a lifetime with the help of the state of the art navigation system",
+							"take the vacation you have been waiting for with a state of the art navigation system",
+							"tame the highway thanks to the state of the art navigation system",
+							"tame the open road with a navigation system that will get you anywhere you want to go",
+							"tame the urban jungle with the convenience of a navigation system"];
+
+			var sunroof=[	"enjoy a majestic view through the ",
+							"enjoy the fresh air through the ",
+							"enjoy the slick view from the ",
+							"enjoy the slick view through the ",
+							"enjoy the sunshine through the ",
+							"enjoy the view through the ",
+							"enjoy your view of the great outdoors through the ",
+							"let the summer vibes shine through the ",
+							"soak in the sunshine through the ",
+							"take in majestic sights through the ",
+							"take in sights through the ",
+							"take in the fresh air through the ",
+							"take in the mid-day sun through the ",
+							"take in the sights through the ",
+							"take in the view through the "];
+
+							//breeze- open sunroof
+							//"enjoy the breeze through the open sunroof",
+							//"enjoy the smooth breeze through the open sunroof",
+							//"feel the smooth breeze through the open sunroof",
+							//"take in the breeze through the open sunroof",
+							//"take in the smooth breeze through the open sunroof",
+
+			var dvd=[		"entertain your crew during long rides with a rear DVD system",
+							"entertain your family during long rides with a rear DVD system entertainment system",
+							"keep the kids occupied with the rear DVD entertainment system",
+							"keep your family entertained with a rear DVD system",
+							"keep your passengers entertained with the rear DVD entertainment system"];
+
+			var radio=[		"enjoy a variety of your favorite * ",
+							"enjoy your favorite * ",
+							"jam out to a variety of your favorite * ",
+							"jam out to your favorite * ",
+							"listen to your favorite * ",
+							"listen to the * you want ",
+							"listen to your favorite * ",
+							"listen your favorite * ",
+							"play your favorite * ",
+							"rock out to your favorite * "];
+
+			var radio2=[	"music",
+							"songs",
+							"tunes"];
+
+			var radio3=[	"through ",
+							"with "];
+
+			var end=[		"a deal this great wont be around long, call us today",
+							"bring this road warrior home today",
+							"call and get this bad boy in your driveway today",
+							"call and lock down this beast today before it is gone",
+							"call and make this truck yours today",
+							"call in today and lock down this beast before it is gone",
+							"call or come by for a hassle free deal you don't want to miss",
+							"call or come by today for a hassle free deal",
+							"call today and lock down this amazing deal before it is gone",
+							"call today and lock down this amazing deal now",
+							"call today and lock down this beast before it is gone",
+							"call today and lock down this beast now",
+							"call today and lock down this deal before it is gone",
+							"call today and lock down this vehicle now",
+							"call today and lock down this vehicle now before it is gone",
+							"call today for a deal you will not want to miss out on",
+							"call today for a deal you will not want to pass up on",
+							"call today for a great opportunity",
+							"call today for a haggle free car buying experience",
+							"call today for a hassle free car buying experience",
+							"call us and make it yours today",
+							"call us now to learn more about this great deal",
+							"call us today and make it yours",
+							"call us today and make this amazing truck yours",
+							"call us today and make this beauty yours",
+							"call us today and make this powerhouse yours",
+							"call us today and make this truck yours",
+							"call us today and put this power house in your driveway",
+							"call us today and put this truck in your driveway",
+							"call us today and start adventuring",
+							"call us today and take advantage of this amazing deal",
+							"call us today and take it home",
+							"call us today for a deal you will not want to miss out on",
+							"call us today for a great buying experience",
+							"call us today for a great deal",
+							"call us today for a haggle free car buying experience",
+							"call us today for a hassle free deal",
+							"call us today for a hassle free deal on this beauty",
+							"come by today for a hassle free deal",
+							"come in today and take home this amazing deal",
+							"come in today for a hassle free deal",
+							"come in today for a hassle free experience",
+							"don't let this deal pass you by, call us today",
+							"get your hands on this truck before its gone, call us today",
+							"give us a call today for a hassle free deal",
+							"make your adventures come true today",
+							"put this powerhouse in your drive way, give us a call today",
+							"this truck is too good to hang around long, call us and claim it today"];
+
+			var cat = [navigation,sunroof,dvd,bluetooth,rearCamera];
+
+
+			function handleClick(){
+				var mixxer = [];
+
+
+				//seats
+				mixxer[0]=seats[Math.floor(Math.random()*seats.length)];
+
+				if(document.getElementById('hc1').checked){
+					mixxer[0]+="heated/cooled ";
+
+				}
+				else if(document.getElementById('hc2').checked){
+					mixxer[0]+="heated ";
+
+				}
+				else if(w["myForm"]["seat"].value=="leather"){
+					mixxer[0]+="luxurious ";
+
+				}
+				else{
+					mixxer[0]+="durable ";
+
+				}
+				//color
+				if(document.getElementById("interior").value){
+					mixxer[0]+=document.getElementById("interior").value.toLowerCase()+' ';
+
+				}
+				mixxer[0]+=w["myForm"]["seat"].value+" seats";
+
+
+				//engine
+				var e = document.getElementById("engine").value.trim();
+
+				if(e.slice(-6).toLowerCase()!="engine"){
+					e+= " Engine";
+
+				}
+				if(w["myForm"]["body"].value=="truck"){
+					mixxer[1]=engineT1[Math.floor(Math.random()*engineT1.length)];
+					if(mixxer[1].includes("power")||e.toLowerCase().includes("power")){
+						mixxer[1]+=engineT2[Math.floor(Math.random()*12)]+e;  //hard coded 12 for no power
+					}
+					else{
+						mixxer[1]+=engineT2[Math.floor(Math.random()*engineT2.length)]+e;
+					}
+				}
+				else{
+					mixxer[1]=engineC1[Math.floor(Math.random()*engineC1.length)]+engineC2[Math.floor(Math.random()*engineC2.length)]+e;
+
+				}
+				
+
+				//add line from each of the checked
+				for(var i=0;i<cat.length;i++){
+					var cur = document.getElementById('A'+i);
+					if(cur.checked){
+						cur=cat[i][Math.floor(Math.random()*cat[i].length)];
+						switch(i){
+							case 1://sunroof
+								cur+="built-in sunroof";
+								break;
+							//default:
+								//mixxer.push(cur);
+						}
+						mixxer.push(cur);
+
+					}
+				}
+
+				//radio
+
+				if(document.getElementById('Sat').checked||document.getElementById('Aux').checked){
+					var rad = radio[Math.floor(Math.random()*radio.length)];
+					rad = rad.replace("*",radio2[Math.floor(Math.random()*radio2.length)]);
+					rad+=radio3[Math.floor(Math.random()*radio3.length)]
+					if(document.getElementById('Sat').checked){
+						if(document.getElementById('Aux').checked){
+							rad+= "satellite radio and auxiliary input"
+						}
+						else{
+							rad+= "satellite radio"
+						}
+					}
+					else{
+						rad+= "auxiliary input"
+					}
+					mixxer.push(rad);
+				}
+
+				listing=capitalize(end[Math.floor(Math.random()*end.length)])+"!";
+
+
+
+
+				//mix mixxer
+				var mixxed=[];
+
+				var l=mixxer.length;
+
+				var i;
+
+				while(l>1){
+					i=Math.floor(Math.random() * l);
+
+					mixxed.push(mixxer[i]);
+
+					l--;
+
+					mixxer[i]=mixxer[l];
+
+				}
+				mixxed.push(mixxer[0]);
+
+
+
+				switch(mixxed.length){
+					case 4:
+						output=capitalize(mixxed[0])+" and "+mixxed[1]+". "+capitalize(mixxed[2])+" and "+mixxed[3]+".";
+
+						break;
+
+					case 5:
+						output=capitalize(mixxed[0])+" and "+mixxed[1]+". "+capitalize(mixxed[2])+". "+capitalize(mixxed[3])+" and "+mixxed[4]+".";
+
+						break;
+
+					case 2:
+						output=capitalize(mixxed[0])+" and "+mixxed[1]+".";
+
+						break;
+
+					case 3:
+						output=capitalize(mixxed[0])+" and "+mixxed[1]+". "+capitalize(mixxed[2])+".";
+
+						break;
+
+					default:
+						output=capitalize(mixxed[0])+" and "+mixxed[1]+". "+capitalize(mixxed[2])+" and "+mixxed[3]+". "+capitalize(mixxed[4])+" and "+mixxed[5]+".";
+
+				}
+
+
+				//output=capitalize(mixxed[0])+" and "+mixxed[1]+". "+capitalize(mixxed[2])+" and "+mixxed[3]+".";
+
+				//for(var i=6;i<=14;i++){
+				//	document.getElementById('A'+i).innerText='';
+
+				//}
+
+
+				document.getElementById("desc").value = output;
+
+				document.getElementById("desc2").value = listing;
+
+			}
+
+			function printShit(idtag){}
+
+			function capitalize(s) {
+				return s[0].toUpperCase() + s.slice(1);
+
+			}
+
+			function red(){
+				for(var i=5;i<=12;i++){
+					document.getElementById('A'+i).parentNode.style.color = "lightgray";
+
+				}
+			}
+			
+		</script>
+		
+	</head>
+	<body onload="JavaScript:red()">
+		<form id = "myForm" action="JavaScript:handleClick()">
+			
+			<b>Seat Color:</b>
+			<input type="text" id="interior" value="">
+			<label><input type="radio" name="seat" value="leather">Leather</label>
+			<label><input type="radio" name="seat" value="cloth" checked>Cloth</label>
+			<label><input type="radio" name="seat" value="vinyl">Vinyl</label>
+
+			<label><input type="checkbox" id='hc2'>Heated</label>
+			<label><input type="checkbox" id='hc1'>Cooled</label>
+
+			<br><br><br>
+			<b>Engine:</b>
+			<input type="text" size="40" id="engine" value="">
+			<b>Body:</b>
+			<label><input type="radio" name="body" value="truck" checked>Truck</label>
+			<label><input type="radio" name="body" value="other">Other</label>
+			<br><br><br>
+
+			Select <b>two</b> or more. 
+			<table border="1" id="tablestuff">
+				<tr>
+					<td><label><input type="checkbox" id='A0' value='navigation'>Navigation</label></td>
+					<td><label><input type="checkbox" id='A1' value='sunroof'>Sunroof</label></td>
+					<td><label><input type="checkbox" id='A2' value='dvd'>Rear DVD</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='A3' value='bluetooth'>Bluetooth</label></td>
+					<td><label><input type="checkbox" id='A4' value='rearCamera'>Rear Camera</label>
+						<label><input type="checkbox" id='A5' value='sensors'>Sensors</label>
+						<label><input type="checkbox" id='A6' value='fSensors'>Front</label></td>
+					<td><label><input type="checkbox" id='Sat' value='satellite'>Satellite</label>
+						<label><input type="checkbox" id='Aux' value='auxiliary'>Auxiliary</label></td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" id='A7' value='hitch'>Trailer Hitch</label>
+						<label><input type="checkbox" id='A8' value='goose'>Gooseneck</label></td>
+					<td><input type="text" size="2" dir="rtl" id="wheel" value="20">
+						<label><input type="checkbox" id='A9' value='aluminum'>Aluminum</label>
+						<label><input type="checkbox" id='A10' value='chrome'>Chrome</label></td>
+					<td><label><input type="checkbox" id='A11' value='convertible'>Convertible</label>
+						<label><input type="checkbox" id='A12' value='reTop'>Removable Top</label></td>
+				</tr>
+			</table>
+			<br><input type="submit" value="Write"><br>
+			<textarea id="desc" rows="7" cols="65"></textarea><br>
+			<textarea id="desc2" rows="7" cols="65"></textarea>
+		</form>		
+	</body>
+</html>

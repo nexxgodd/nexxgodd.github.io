@@ -7,8 +7,11 @@
 		"ungreased"
 	],
 	"cSpell.ignoreWords": [
+		"codebox",
+		"newgame",
 		"ogxx",
 		"sawtown",
+		"subprotocol",
 		"windowbuffer"
 	]
 }
