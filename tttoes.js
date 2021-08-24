@@ -76,7 +76,9 @@ function isWinner(){
 }
 
 function setTurn(who){
+	
 	isMyTurn=(who===xo);
+	lastMoveBy=xoNot(who);
 	if(isMyTurn){
 		document.getElementById("turn-display").innerHTML="Your turn";
 	}
@@ -220,9 +222,10 @@ function sendChat(e){
 	message.value="";
 }
 
-
+//onclick send move
 function selectT(id){
 	if(isMyTurn){
+		isMyTurn=false;
 		stompClient.send("/app/play/"+code, {}, JSON.stringify({'name': xo,'content':id}));
 	}
 	else{
