@@ -3,6 +3,7 @@
 var myName="";
 var code="";
 var xo="?";
+var lastMoveBy="X";
 var isMyTurn=false;
 var board="   |   |   ";
 var tttList=[0,1,2,4,5,6,8,9,10].map((t)=>"ttt"+t);
@@ -49,15 +50,13 @@ function markT(val,id){
 	let temp =[...board];
 	temp[id]=val;
 	board=temp.join("");
-	console.log(id);
-	
-	console.log(board);
 
 	isWinner();
 }
 
 function clearBoard(){
 	board="   _   _   ";
+	setTurn(xoNot(lastMoveBy));
 	tttList.forEach(t=>{
 		document.getElementById(t).disabled=false;
 	})
@@ -68,7 +67,8 @@ function isWinner(){
 	regi.forEach(r=>{
 		let test=r.exec(board);
 		if(test){
-			console.log(test[1]+ " is win");
+			document.getElementById("turn-display").innerText=test[1]+" is the Winner!";
+			isMyTurn=false;
 			return test[1];
 		}
 	})
@@ -226,16 +226,25 @@ function selectT(id){
 		stompClient.send("/app/play/"+code, {}, JSON.stringify({'name': xo,'content':id}));
 	}
 	else{
-		alert("nope")
+		
+		//red flash
+		var f = document.getElementById('ttt'+id);
+		f.innerText=xo;
+		f.classList.add('redness');
+		setTimeout(()=>{
+			f.classList.remove('redness');
+		}, 1000);
+		 
 	}
 }
 
+//receive new play message
 function doPlay({name,content}){
-
 	if(name==="C"){
 		clearBoard();
 	}
 	else{
+		setTurn(xoNot(name));
 		markT(name,content);
 	}	
 }

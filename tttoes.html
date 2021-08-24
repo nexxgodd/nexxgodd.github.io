@@ -74,7 +74,7 @@
 
 				<div class="card text-center text-white bg-dark">
 					<div class="card-body">
-						<h5 class="card-title">Tic-Tac-Toe</h5>
+						<h5 class="card-title" id="fade-it">Tic-Tac-Toe</h5>
 						<h5 class="card-title" id="room-code"></h5>
 						<p class="card-text ">
 
@@ -93,9 +93,10 @@
 								<!-- <img src="/favicon.png" alt="" width=100% > -->
 
 								<label for="private">Private game?</label>
-								<input type="checkbox" id="private" onclick="setPrivate()">
+								<input type="checkbox" id="private" onclick="setPrivate()" checked>
 								<!-- <br> -->
-								<div id="private-info" style="display: none;">
+								<!-- style="display: none;" -->
+								<div id="private-info" > 
 
 									<label for="private">Host?</label>
 									<input type="checkbox" id="host" onclick="setHost()">
