@@ -1,8 +1,12 @@
 
 
-
-
-
+var myName="";
+var code="";
+var xo="?";
+var isMyTurn=false;
+var board="   |   |   ";
+var tttList=[0,1,2,4,5,6,8,9,10].map((t)=>"ttt"+t);
+//var isWaiting=false;
 
 // var ws=null;
 function setPrivate(){
@@ -24,7 +28,74 @@ function toggleDisplay(id,isDisplay){
 	document.getElementById(id).style.display=isDisplay?"":"none";
 }
 
-var myName="";
+//add to chat
+function showGreeting(message,id) {
+	let box =document.getElementById(id);
+		box.children[0].innerHTML+=message.name+": "+message.content + "<br>";
+		// console.log(message)
+		// console.log(id)
+	// let myDiv = document.getElementById("myTabContent");
+	box.scrollTop = box.scrollHeight;
+}
+
+
+
+
+
+function markT(val,id){
+	let toe=document.getElementById("ttt"+id);
+	toe.innerText=val;
+	toe.disabled=true;
+	let temp =[...board];
+	temp[id]=val;
+	board=temp.join("");
+	console.log(id);
+	
+	console.log(board);
+
+	isWinner();
+}
+
+function clearBoard(){
+	board="   _   _   ";
+	tttList.forEach(t=>{
+		document.getElementById(t).disabled=false;
+	})
+}
+
+var regi=[/(X|O)\1\1/,/(X|O)...\1...\1/,/(X|O).._.\1._..\1/,/(X|O)_.\1._\1/];
+function isWinner(){
+	regi.forEach(r=>{
+		let test=r.exec(board);
+		if(test){
+			console.log(test[1]+ " is win");
+			return test[1];
+		}
+	})
+	return false;
+}
+
+function setTurn(who){
+	isMyTurn=(who===xo);
+	if(isMyTurn){
+		document.getElementById("turn-display").innerHTML="Your turn";
+	}
+	else{
+		document.getElementById("turn-display").innerHTML=who+"'s turn";
+	}
+}
+
+function xoNot(who){
+	return who==="X"?"O":"X";
+}
+
+
+
+/***************************************************************\
+|                          Stomp Stuff                          |
+\***************************************************************/
+
+
 function connect(e) {
 	e.preventDefault();
 	myName =document.getElementById("name").value;
@@ -46,71 +117,96 @@ function connect(e) {
 		return;
 	}
 
+	toggleDisplay("waiting",true);
+	toggleDisplay("waited",false);
 
-    var socket = new SockJS('http://localhost:8080/gs-guide-websocket');
-	
-	// socket.onopen = function () {
-	// 	console.log('Client connection opened');
-	// 	alert();
-	// };
-	// socket.onmessage = function(data) {
-	// 	console.log(data.data);
-	// };
-
-
+    // var socket = new SockJS('http://192.168.1.33:8080/gs-guide-websocket');
+    var socket = new SockJS('https://simple-ttt-api.herokuapp.com/gs-guide-websocket');
 
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({}, (frame)=> {
         setConnected(true);
-		////////////////////
-        console.log('Connected: ' + frame);
+        toggleDisplay("waiting",false);
+		toggleDisplay("waited",false);
 		
-		newGame(isPrivate);
+		if(isPrivate&&!isHost){
+			existingGame(codebox);
+		}
+		else{
+			newGame(isPrivate);
+		}
 
-
-    });
+		//;
+    },()=>{
+		console.log("Server Disconnected");
+		toggleDisplay("waiting",false);
+		toggleDisplay("waited",true);
+		disconnect();
+	});
 }
+
 
 function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
     setConnected(false);
+	clearBoard();
 	code='';
-    console.log("Disconnected");
+	document.getElementById("room-code").innerHTML="";
+	document.getElementById("local").innerHTML="";
+    //console.log("Disconnected");
 }
-
 
 
 //new game without code
-function newGame(isOpen){
-	var newSub =stompClient.subscribe('/user/queue/response', function (code) {
-		// console.log();
+function newGame(isPrivate){
+	var newSub =stompClient.subscribe('/user/queue/response', (code)=> {
 		joinGame(JSON.parse(code.body));
 		newSub.unsubscribe();
 	});
-	stompClient.send("/app/newgame",{},JSON.stringify({'name': 'me','content':isOpen?'open':'closed'}));
+	stompClient.send("/app/newgame",{},JSON.stringify({
+		'name': 'me','content':!isPrivate?'open':'closed'
+	}));
 }
 
-function wip(c){
-	alert("Currently out of order!");
+//join game with code
+function existingGame(c){
+	var newSub =stompClient.subscribe('/user/queue/response', (code)=> {
+		console.log(c);
+		console.log(code);
+		joinGame(JSON.parse(code.body));
+		newSub.unsubscribe();
+	});
+	//stompClient.send(address, {}, JSON.stringify({'name': myName,'content':message.value}));
+
+	stompClient.send("/app/joingame",{},JSON.stringify({
+		'name': 'me','content':c
+	}));
 }
 
-var code='';
 function joinGame(c){
 	code=c.content;
-	console.log(code);
-	document.getElementById("room-code").innerHTML=code;
+	console.log("Room code is: "+code);
+	document.getElementById("room-code").innerHTML="Code: "+code;
 	document.getElementById("XorO").innerHTML=c.name;
+	xo=c.name;
+	setTurn("O")
 
-	stompClient.subscribe('/queue/message/'+code, function (greeting) {
+	stompClient.subscribe('/queue/message/'+code, (greeting)=>{
 		showGreeting(JSON.parse(greeting.body),"local");
 	});
 
-	stompClient.subscribe('/queue/message', function (greeting) {
+	stompClient.subscribe('/queue/message', (greeting)=> {
 		showGreeting(JSON.parse(greeting.body),"global");
 	});
+	
+	stompClient.subscribe('/queue/game/'+code, (play)=>{
+		//console.log(play);
+		doPlay(JSON.parse(play.body));
+	});
 }
+
 
 function sendChat(e){
 	e.preventDefault();
@@ -125,54 +221,26 @@ function sendChat(e){
 }
 
 
-
-function showGreeting(message,id) {
-	document.getElementById(id).innerHTML+=
-		message.name+": "+message.content + "<br>";
-		//console.log(message)
+function selectT(id){
+	if(isMyTurn){
+		stompClient.send("/app/play/"+code, {}, JSON.stringify({'name': xo,'content':id}));
+	}
+	else{
+		alert("nope")
+	}
 }
 
+function doPlay({name,content}){
 
-// function sendMessage() {
-//     stompClient.send("/app/request/"+code, {}, JSON.stringify({'name': 'me','content':document.getElementById("name").value}));
-// }
+	if(name==="C"){
+		clearBoard();
+	}
+	else{
+		markT(name,content);
+	}	
+}
 
-
-
-
-
-// function connect() {
-//     // var socket = new SockJS('http://localhost:8080/user');
-//     // ws = new WebSocket('ws://localhost:8080/user','subprotocol.demo.websocket');
-//     ws = new SockJS('http://192.168.1.33:8080/user','subprotocol.demo.websocket', {debug: true, transports: []});
-
-// 	ws.onopen = function () {
-// 		console.log('Client connection opened');
-// 	};
-//     ws.onmessage = function(data) {
-// 		showGreeting(data.data);
-// 	};
-// 	ws.onerror= function (event) {
-// 		console.log('Client error: ' + event);
-// 	};
-// 	ws.onclose = function (event) {
-// 		console.log('Client connection closed: ' + event.code);
-// 	};
-// 	setConnected(true);
-// }
-
-// function disconnect() {
-// 	if (ws != null) {
-// 		ws.close();
-// 	}
-// 	ws=null;
-// 	setConnected(false);
-// 	console.log("Websocket is in disconnected state");
-// }
-
-// function sendName() {
-// 	var data = JSON.stringify({
-// 		'user' : document.getElementById("name").value
-// 	})
-// 	ws.send(data);
-// }
+function sendClear(){
+	console.log("clearing");
+	stompClient.send("/app/play/"+code, {}, JSON.stringify({'name': "C",'content':xo}));
+}

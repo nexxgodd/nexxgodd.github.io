@@ -1,202 +1,231 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- Bootstrap CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet"> 
-		<link href="/index.css" rel="stylesheet">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Fluffy Jambe | Tic-Tac-Toe</title>
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet">
+	<link href="/index.css" rel="stylesheet">
 
-		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-		<script src="/scripts/stomp.js"></script>
+	<title>Fluffy Jambe | Tic-Tac-Toe</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
 
-	</head>
-	<body>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="/scripts/stomp.js"></script>
 
-		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="/"><span  id="logoF">Fluffy</span><span id="logoJ">Jambe</span></a>
-			  	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-			  	</button>
-			  	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link" href="/">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/games.html">Games</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/recipes.html">Recipes</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/misc.html">Misc</a>
-						</li>
-						<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Quick Links
-						</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
-								<li><a class="dropdown-item" href="/sawtown.html">Saw Town</a></li>
-								<li><a class="dropdown-item active" href="/tttoes.html">Tic-Tac-Toe</a></li>
-							</ul>
-						</li>
-					</ul>
-			  	</div>
-			</div>
-		</nav>
+</head>
 
+<body>
+
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col"> </div>
-				<div class="col-12 col-md-10 col-lg-8">
+			<a class="navbar-brand" href="/"><span id="logoF">Fluffy</span><span id="logoJ">Jambe</span></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/games.html">Games</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/recipes.html">Recipes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/misc.html">Misc</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Quick Links
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
+							<li><a class="dropdown-item" href="/sawtown.html">Saw Town</a></li>
+							<li><a class="dropdown-item active" href="/tttoes.html">Tic-Tac-Toe</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-					
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col"> </div>
+			<div class="col-12 col-md-10 col-lg-8">
 
 
-					<div class="card text-center text-white bg-dark" >
-						<div class="card-body">
-							<h5 class="card-title">Tic-Tac-Toe</h5>
 
-							<p class="card-text "> 
-								
-								<div class="row" id="ttt-setup-container">
 
-									<div class="col"></div>
+				<div class="card text-center text-white bg-dark">
+					<div class="card-body">
+						<h5 class="card-title">Tic-Tac-Toe</h5>
+						<h5 class="card-title" id="room-code"></h5>
+						<p class="card-text ">
 
-									<div class="col-5 col-sm-4">
-										<!-- <img src="/favicon.png" alt="" width=100% > -->
+						<div class="row" id="ttt-setup-container">
 
-										<label for="name">Name</label>
-										<input type="text" id="name" placeholder="Enter a name">
-										<div id="name-bad" style="color:red; display: none;">Must provide a name!</div>
-									</div>
-									<div class="col-5 col-sm-4">
-									<!-- <img src="/favicon.png" alt="" width=100% > -->
+							<div class="col"></div>
 
-										<label for="private">Private game?</label>
-										<input type="checkbox" id="private" onclick="setPrivate()">
-										<!-- <br> -->
-										<div id="private-info"  style="display: none;">
+							<div class="col-5 col-sm-4">
+								<!-- <img src="/favicon.png" alt="" width=100% > -->
 
-											<label for="private">Host?</label>
-											<input type="checkbox" id="host" onclick="setHost()">
-											
-											<div id="code-div">
-												<input type="text" id="codebox" class="text-input" placeholder="Room Code">
-												<div  id="code-bad" style="color:red; display: none;">Code not valid!</div>
-											</div>
-										</div>
-										
-										<br>
-									</div>
+								<label for="name">Name</label>
+								<input type="text" id="name" placeholder="Enter a name">
+								<div id="name-bad" style="color:red; display: none;">Must provide a name!</div>
+							</div>
+							<div class="col-5 col-sm-4">
+								<!-- <img src="/favicon.png" alt="" width=100% > -->
 
-									<div class="col"></div>
-									<div>
-										<br>
-										<!-- button -->
-										<button id="join-btn" class="btn btn-sexy" onclick="wip(event)">Join Game</button>
+								<label for="private">Private game?</label>
+								<input type="checkbox" id="private" onclick="setPrivate()">
+								<!-- <br> -->
+								<div id="private-info" style="display: none;">
+
+									<label for="private">Host?</label>
+									<input type="checkbox" id="host" onclick="setHost()">
+
+									<div id="code-div">
+										<input type="text" id="codebox" class="text-input" placeholder="Room Code">
+										<div id="code-bad" style="color:red; display: none;">Code not valid!</div>
 									</div>
 								</div>
 
 								<br>
+							</div>
 
-								<!-- the goods -->
-								<div class="row" id="ttt-container" style="display: none;">
+							<div class="col"></div>
+							<div>
+								<br>
+								<!-- button -->
+								<button id="join-btn" class="btn btn-sexy" onclick="connect(event)">Join Game</button>
+								<div id="waiting" style="display: none;">Connecting...</div>
+								<div id="waited" style="color:red; display: none;">Connection failed, please try again.
+								</div>
+							</div>
+						</div>
 
-									<div class="col"></div>
-									<!-- ttt -->
-									<div class="col-12 col-md-5">
-										<h5 class="card-title">Code: <span id="room-code"></span></h5>
-										<h5 class="card-title">You are: <span id="XorO"></span></h5>
-										<div>
-											<button id="ttt0" type="button" class="ttt-hole" onclick="selectT(0)">
+						<br>
+
+						<!-- the goods -->
+						<div class="row" id="ttt-container" style="display: none;">
+							<!-- ttt -->
+							<div class="col-12 col-sm-6 col-lg-5 col-xxl-4">
+								<h5 class="card-title">You are: <span id="XorO"></span></h5>
+								<h5 class="card-title" id="turn-display"></h5>
+
+								<div>
+									<div>
+										<button id="ttt0" type="button" class="ttt-hole" onclick="selectT(0)">
 											<button id="ttt1" type="button" class="ttt-hole" onclick="selectT(1)">
-											<button id="ttt2" type="button" class="ttt-hole" onclick="selectT(2)">
-										</div>
-										<div>
-											<button id="ttt3" type="button" class="ttt-hole" onclick="selectT(3)">
-											<button id="ttt4" type="button" class="ttt-hole" onclick="selectT(4)">
-											<button id="ttt5" type="button" class="ttt-hole" onclick="selectT(5)">
-										</div>
-										<div>
-											<button id="ttt6" type="button" class="ttt-hole" onclick="selectT(6)">
-											<button id="ttt7" type="button" class="ttt-hole" onclick="selectT(7)">
-											<button id="ttt8" type="button" class="ttt-hole" onclick="selectT(8)">
-										</div>
-										<br>
-											<!-- ⬤⛝ -->
+												<button id="ttt2" type="button" class="ttt-hole" onclick="selectT(2)">
 									</div>
-									<!-- chat -->
-									<div class="col-12 col-md-5">
+									<div>
+										<button id="ttt4" type="button" class="ttt-hole" onclick="selectT(4)">
+											<button id="ttt5" type="button" class="ttt-hole" onclick="selectT(5)">
+												<button id="ttt6" type="button" class="ttt-hole" onclick="selectT(6)">
+									</div>
+									<div>
+										<button id="ttt8" type="button" class="ttt-hole" onclick="selectT(8)">
+											<button id="ttt9" type="button" class="ttt-hole" onclick="selectT(9)">
+												<button id="ttt10" type="button" class="ttt-hole" onclick="selectT(10)">
+									</div>
+									<div class="mt-2 mb-4">
+										<button onclick="disconnect()" class="me-3 btn btn-secondary">Quit</button>
+										<button onclick="sendClear()" class="btn btn-secondary">Clear</button>
+									</div>
+								</div>
 
-										<ul class="nav nav-tabs" id="myTab" role="tablist">
-											<li class="nav-item tabs" role="presentation">
-											  <button class="nav-link tabs2 active" id="local-tab" data-bs-toggle="tab" data-bs-target="#local" type="button" role="tab" aria-controls="local" aria-selected="true">Local Chat</button>
-											</li>
-											<li class="nav-item tabs" role="presentation">
-											  <button class="nav-link tabs2" id="global-tab" data-bs-toggle="tab" data-bs-target="#global" type="button" role="tab" aria-controls="global" aria-selected="false">Global Chat</button>
-											</li>
-										</ul>
-										<div class="card chat-card text-dark" >
-											<div class="tab-content" id="myTabContent">
-												<div class="tab-pane fade show active" id="local" role="tabpanel" aria-labelledby="local-tab">
-													
-												</div>
-												
-												<div class="tab-pane fade" id="global" role="tabpanel" aria-labelledby="global-tab">
-												
-												</div>
-												
-												
+
+								<!-- ⬤⛝ -->
+							</div>
+							<!-- <div class="col"></div> -->
+							<!-- chat -->
+							<div class="col-12 col-sm-6 col-lg-7 .offset-xxl-1">
+
+								<ul class="nav nav-tabs" id="myTab" role="tablist">
+									<li class="nav-item tabs" role="presentation">
+										<button class="nav-link tabs2 active" id="local-tab" data-bs-toggle="tab"
+											data-bs-target="#local" type="button" role="tab" aria-controls="local"
+											aria-selected="true">Local Chat</button>
+									</li>
+									<li class="nav-item tabs" role="presentation">
+										<button class="nav-link tabs2" id="global-tab" data-bs-toggle="tab"
+											data-bs-target="#global" type="button" role="tab" aria-controls="global"
+											aria-selected="false">Global Chat</button>
+									</li>
+								</ul>
+								<div class="card chat-card text-dark">
+									<div class="tab-content" id="myTabContent">
+										<div class="scrolling tab-pane fade show active" id="local" role="tabpanel"
+											aria-labelledby="local-tab">
+											<div>
+												<!-- chat here -->
 											</div>
 										</div>
-										
-										<form onsubmit="sendChat(event)" autocomplete="off">
-											<div class="input-group mb-3">
-												<input type="text" class="form-control" id="chat-input" placeholder="Chat" >
-												<button class="btn btn-secondary" type="submit" >Submit</button>
-											  </div>
-										</form>
-										  
 
-
-
-
+										<div class="scrolling tab-pane fade" id="global" role="tabpanel"
+											aria-labelledby="global-tab">
+											<div>
+												<!-- chat here -->
+											</div>
+										</div>
 
 
 									</div>
-									<div class="col"></div>
-
 								</div>
-								
-								
-							</p>
 
-							
+								<form onsubmit="sendChat(event)" autocomplete="off">
+									<div class="input-group mb-3">
+										<input type="text" class="form-control" id="chat-input" placeholder="Chat">
+										<button class="btn btn-secondary" type="submit">Submit</button>
+									</div>
+								</form>
+
+
+
+
+
+
+
+							</div>
+							<div class="col-12 col-lg-1"></div>
+
 						</div>
+
+
+						</p>
+
+
 					</div>
-
-					
-					
 				</div>
-				<div class="col"></div>
-				</div>
-		  </div>
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-		<script src="/tttoes.js"></script>
-	</body>
+
+
+			</div>
+			<div class="col"></div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+		crossorigin="anonymous"></script>
+	<script src="/tttoes.js"></script>
+</body>
+
 </html>
