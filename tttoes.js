@@ -30,13 +30,41 @@ function toggleDisplay(id,isDisplay){
 }
 
 //add to chat
-function showGreeting(message,id) {
-	let box =document.getElementById(id);
-		box.children[0].innerHTML+=message.name+": "+message.content + "<br>";
-		// console.log(message)
-		// console.log(id)
-	// let myDiv = document.getElementById("myTabContent");
+var prev={local:{name:null,left:true},global:{name:null,left:true}}
+function showGreeting({name,content},boxId) {
+	myPrev=prev[boxId];
+	let box =document.getElementById(boxId);
+	let  innerBox=box.children[0];
+		// let out=name+": "+content + "<br>"
+
+	let mess = `<div class="mt-1 card">${content}</div>`;
+	if(myPrev.name===name){
+		innerBox=innerBox.lastElementChild;
+		if(myPrev.left){
+			innerBox=innerBox.previousSibling;
+		}
+		innerBox.innerHTML+=mess
+	}
+	//new name
+	else{
+		let outName=
+		`<div class="col-2">
+			<div class="mt-1 card card-sexy">${name}</div>
+		</div>`;
+		outMessage=
+		`<div class="col-10">
+			${mess}
+		</div>`;
+		innerBox.innerHTML+=myPrev.left?outName+outMessage:outMessage+outName;
+		prev[boxId]={name:name,left:!myPrev.left};
+	}
+
+
+
+		//box.children[0].innerHTML+=out;
 	box.scrollTop = box.scrollHeight;
+	//console.log(prev);
+	//prev[boxId]=name;
 }
 
 
@@ -156,7 +184,7 @@ function disconnect() {
 	clearBoard();
 	code='';
 	document.getElementById("room-code").innerHTML="";
-	document.getElementById("local").innerHTML="";
+	document.getElementById("local").children[0].innerHTML="";
     //console.log("Disconnected");
 }
 

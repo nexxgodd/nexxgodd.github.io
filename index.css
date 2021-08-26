@@ -216,6 +216,13 @@ input{
     box-shadow: 0 0 0 0 ;
 }
 
+.card-sexy{
+	background-color: #A5F;
+	color: white;
+}
+
+
+
 
 
 /*************************for bingo*************************/
@@ -252,32 +259,7 @@ td{
 /*************************animation*************************/
 
 
-/* * {
-	font-family: 'Segoe UI', sans-serif;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-  } */
-  /* #fade-it {
-	padding: 15px;
-	text-align: center;
-  } */
-  /* @-webkit-keyframes yellow-fade {
-	from {
-	  background: #A5F;
-	}
-	to {
-	  background: #fff;
-	}
-  }
-  @-moz-keyframes yellow-fade {
-	from {
-	  background: #A5F;
-	}
-	to {
-	  background: #fff;
-	}
-  } */
+
   @keyframes red-fade {
 	from {
 		background: #A5F;
