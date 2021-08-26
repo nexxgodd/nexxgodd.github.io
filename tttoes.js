@@ -154,6 +154,7 @@ function connect(e) {
     var socket = new SockJS('https://simple-ttt-api.herokuapp.com/gs-guide-websocket');
 
     stompClient = Stomp.over(socket);
+	stompClient.debug = null;
     stompClient.connect({}, (frame)=> {
         setConnected(true);
         toggleDisplay("waiting",false);
@@ -203,8 +204,8 @@ function newGame(isPrivate){
 //join game with code
 function existingGame(c){
 	var newSub =stompClient.subscribe('/user/queue/response', (code)=> {
-		console.log(c);
-		console.log(code);
+		// console.log(c);
+		// console.log(code);
 		joinGame(JSON.parse(code.body));
 		newSub.unsubscribe();
 	});
