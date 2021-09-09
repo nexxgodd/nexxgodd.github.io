@@ -35,36 +35,45 @@ function showGreeting({name,content},boxId) {
 	myPrev=prev[boxId];
 	let box =document.getElementById(boxId);
 	let  innerBox=box.children[0];
-		// let out=name+": "+content + "<br>"
+	// let out=name+": "+content + "<br>"
+	
+	if(name===""){
+		innerBox.innerHTML+=
+			`<div class="col-12">
+				<div class="mt-1 card text-white bg-secondary">
+					${content}
+				</div>	
+			</div>`;
 
-	let mess = `<div class="mt-1 card">${content}</div>`;
-	if(myPrev.name===name){
-		innerBox=innerBox.lastElementChild;
-		if(myPrev.left){
-			innerBox=innerBox.previousSibling;
-		}
-		innerBox.innerHTML+=mess
+		prev[boxId].name="";
 	}
-	//new name
 	else{
-		let outName=
-		`<div class="col-2">
-			<div class="mt-1 card card-sexy">${name}</div>
-		</div>`;
-		outMessage=
-		`<div class="col-10">
-			${mess}
-		</div>`;
-		innerBox.innerHTML+=myPrev.left?outName+outMessage:outMessage+outName;
-		prev[boxId]={name:name,left:!myPrev.left};
+			
+		let mess = `<div class="mt-1 card">${content}</div>`;
+		if(myPrev.name===name){
+			innerBox=innerBox.lastElementChild;
+			if(myPrev.left){
+				innerBox=innerBox.previousSibling;
+			}
+			innerBox.innerHTML+=mess
+		}
+		//new name
+		else{
+			let outName=
+			`<div class="col-2">
+				<div class="mt-1 card card-sexy">${name}</div>
+			</div>`;
+			outMessage=
+			`<div class="col-10">
+				${mess}
+			</div>`;
+			innerBox.innerHTML+=myPrev.left?outName+outMessage:outMessage+outName;
+			prev[boxId]={name:name,left:!myPrev.left};
+		}
 	}
 
 
-
-		//box.children[0].innerHTML+=out;
 	box.scrollTop = box.scrollHeight;
-	//console.log(prev);
-	//prev[boxId]=name;
 }
 
 
@@ -150,13 +159,13 @@ function connect(e) {
 	toggleDisplay("waiting",true);
 	toggleDisplay("waited",false);
 
-    // var socket = new SockJS('http://192.168.1.33:8080/gs-guide-websocket');
+    //  var socket = new SockJS('http://192.168.1.33:8080/gs-guide-websocket');
     var socket = new SockJS('https://simple-ttt-api.herokuapp.com/gs-guide-websocket');
 
     stompClient = Stomp.over(socket);
-	stompClient.debug = null;
+	//stompClient.debug = null;
     stompClient.connect({}, (frame)=> {
-        setConnected(true);
+        
         toggleDisplay("waiting",false);
 		toggleDisplay("waited",false);
 		
@@ -197,32 +206,33 @@ function newGame(isPrivate){
 		newSub.unsubscribe();
 	});
 	stompClient.send("/app/newgame",{},JSON.stringify({
-		'name': 'me','content':!isPrivate?'open':'closed'
+		'name': myName,'content':!isPrivate?'open':'closed'
 	}));
 }
 
 //join game with code
 function existingGame(c){
 	var newSub =stompClient.subscribe('/user/queue/response', (code)=> {
-		// console.log(c);
-		// console.log(code);
 		joinGame(JSON.parse(code.body));
 		newSub.unsubscribe();
 	});
-	//stompClient.send(address, {}, JSON.stringify({'name': myName,'content':message.value}));
-
 	stompClient.send("/app/joingame",{},JSON.stringify({
-		'name': 'me','content':c
+		'name': myName,'content':c
 	}));
 }
 
 function joinGame(c){
+	
+	xo=c.name;
+	if(xo==="Z"){
+		alert(c.content);
+		return;
+	}
 	code=c.content;
 	console.log("Room code is: "+code);
 	document.getElementById("room-code").innerHTML="Code: "+code;
-	document.getElementById("XorO").innerHTML=c.name;
-	xo=c.name;
-	setTurn("O")
+	document.getElementById("XorO").innerHTML=xo;
+	setTurn(xo);
 
 	stompClient.subscribe('/queue/message/'+code, (greeting)=>{
 		showGreeting(JSON.parse(greeting.body),"local");
@@ -236,19 +246,22 @@ function joinGame(c){
 		//console.log(play);
 		doPlay(JSON.parse(play.body));
 	});
+	setConnected(true);
 }
 
 
 function sendChat(e){
 	e.preventDefault();
 	let message = document.getElementById("chat-input");
-	let address="/app/request";
-	if(document.getElementById("local").classList.contains("active")){
-		address+='/'+code;
+	if(message.value!==""){
+		let address="/app/request";
+		if(document.getElementById("local").classList.contains("active")){
+			address+='/'+code;
+		}
+		// document.getElementById("local").innerHTML+=message.value+"<br>";
+		stompClient.send(address, {}, JSON.stringify({'name': myName,'content':message.value}));
+		message.value="";
 	}
-	// document.getElementById("local").innerHTML+=message.value+"<br>";
-	stompClient.send(address, {}, JSON.stringify({'name': myName,'content':message.value}));
-	message.value="";
 }
 
 //onclick send move
