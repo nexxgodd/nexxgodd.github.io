@@ -62,6 +62,42 @@
 
 
 
+
+
+
+
+
+
+					<div class="card text-center text-white bg-dark" >
+						<div class="card-body">
+							<h5 class="card-title">Animal Crossing Table Builder</h5>
+							<h6 class="card-subtitle mb-2 text-muted">Use code to write code</h6>
+							<h6 class="card-subtitle mb-2 text-muted">September 2021</h6>
+							<p class="card-text">
+								converts excel to json
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<textarea id="acInput" placeholder="Paste Excel"></textarea>
+										<button type="button" class="btn btn-secondary" onclick="formatFish()">Convert</button>
+										<input type="radio" id="acfish" name="accreature" value="fish" checked>
+										<label for="acfish">Fish</label>
+										<input type="radio" id="acbug" name="accreature" value="bug">
+										<label for="acbug">Bug</label>
+										<input type="radio" id="acsea" name="accreature" value="sea">
+										<label for="acsea">Sea Creature</label>
+									</div>
+									<div class="col">
+										<textarea id="acOutput"placeholder="Get JSON"></textarea>
+										<button type="button" class="btn btn-secondary" onclick="copyOutput('acOutput')">Copy Text</button>
+									</div>
+								</div>
+							</p>
+						</div>
+					</div>
+
+
+
+
 					<div class="card text-center text-white bg-dark" >
 						<div class="card-body">
 							<h5 class="card-title">Bingo Card Maker</h5>
@@ -189,7 +225,7 @@
 									</div>
 									<div class="col">
 										<textarea id="recOutput"></textarea>
-										<button type="button" class="btn btn-secondary" onclick="copyOutput()">Copy Text</button>
+										<button type="button" class="btn btn-secondary" onclick="copyOutput('recOutput')">Copy Text</button>
 									</div>
 								</div>
 							</p>
