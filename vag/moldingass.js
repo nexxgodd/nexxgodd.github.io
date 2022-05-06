@@ -144,6 +144,7 @@ function doScript(){
     
   bigassstring+='is proudly offered by Vernon Auto Group. <br><br></font></p>';
   bigassstring+='<div><font style="color: #003333;" data-mce-style="color: #003333;" size="3"><strong>Vernon Auto Group</strong> - A new, unique way to buy a vehicle! In a small town in North Texas lives a unique company with BIG ideas. ';
+  //here
   bigassstring+="We're redefining how our customers buy and own vehicles and it's working... Simply put, you will appreciate the easiest, most efficient and enjoyable buying and ownership experience ANYWHERE! In fact, our innovative approach has driven us to be awarded multiple Dealer Rater Awards and named an eBay Motors Top Strategic Seller!";
   bigassstring+='</font><br><br><br><br><font style="color: #003333;" data-mce-style="color: #003333;" size="3">Here are just a few reasons why customers have chosen Vernon Auto Group:</font><br><br></div><ul style="text-align: left; color: #000000;" data-mce-style="text-align: left; color: #000000;"><li><font size="3">Transparent Deals</font></li><li>';
   bigassstring+='<font size="3">Upfront Pricing, No Haggling, No Numbers Game</font></li><li><font size="3">Fast Friendly Service and Delivery <br></font></li><li><font size="3">';
