@@ -20,46 +20,8 @@
 	<link rel="manifest" href="/site.webmanifest">
 
 </head>
-
-<body>
-
-	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/"><span id="logoF">Fluffy</span><span id="logoJ">Jambe</span></a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="/">Home</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="/games.html">Games</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/recipes.html">Recipes</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/misc.html">Misc</a>
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
-							Quick Links
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
-							<li><a class="dropdown-item" href="/sawtown.html">Saw Town</a></li>
-							<li><a class="dropdown-item" href="/tttoes.html">Tic-Tac-Toe</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+<body onload="addNavBar('Games')">
+	<div id="muhNavBar"></div>
 
 	<div class="container-fluid">
 		<div class="row">
@@ -97,7 +59,7 @@
 
 				<div class="card text-center text-white bg-dark">
 					<div class="card-body mx-5">
-						<h5 class="card-title"><a href="/sawtown.html">Saw Town</a></h5>
+						<h5 class="card-title"><a href="/games/sawtown">Saw Town</a></h5>
 						<h6 class="card-subtitle mb-2 text-muted">my twist on clicker games</h6>
 						<h6 class="card-subtitle mb-2 text-muted">March 2021</h6>
 						<p class="card-text">
@@ -175,6 +137,7 @@
 		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
 		crossorigin="anonymous"></script>
 	<script src="/peggame.js"></script>
+	<script src="/index.js"></script>
 
 </body>
 

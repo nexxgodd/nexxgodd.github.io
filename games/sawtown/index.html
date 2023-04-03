@@ -10,48 +10,40 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet"> 
 		<link href="/index.css" rel="stylesheet">
+		<link href="../sawtown.css" rel="stylesheet">
 
-		<title>Fluffy Jambe</title>
+		<title>Fluffy Jambe | Sawtown</title>
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<link rel="manifest" href="/site.webmanifest">
 
+
+		<script type="text/javascript" src="grid.js"></script>
+		<script type="text/javascript" src="sawtown.js"></script>
+
 	</head>
-	<body onload="addNavBar('Home')">
+	<body onload="addNavBar('SawTown')">
 		<div id="muhNavBar"></div>
+		<br>
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col"> </div>
-				<div class="col-12 col-md-10 col-lg-8">
-					<div class="card text-center text-white bg-dark" >
-						<div class="card-body">
-							<h5 class="card-title">Welcome to Fluffy Jambe</h5>
-							<h6 class="card-subtitle mb-2 text-muted">a website by Todd Emert</h6>
-							<p class="card-text">Just a hub to collect random and cool things that I work on.</p>
-						</div>
-					</div>
+					<div class="card bg-dark" >
 
-					<div class="card text-center text-white bg-dark" >
-						<div class="card-body">
-							<h5 class="card-title">Cracker Barrel Peg Game</h5>
-							<h6 class="card-subtitle mb-2 text-muted">not sure what the real name is?</h6>
-							<h6 class="card-subtitle mb-2 text-muted">December 2020</h6>
-							<p class="card-text">Jump the pegs to remove them. Remove as many as possible.</p>
-							<p class="card-text">Made in a single day!</p>
-							<div id="peg-container">
-
+							<div id="BackgroundBox">
+								<canvas id="GraphicsBox" width="1024px" height="576px">Your browser requires Canvas support to play this game.</canvas>
+								<div id="EventCatcher"></div>
 							</div>
-						</div>
+
 					</div>
-				</div>
-				<div class="col"></div>
-				</div>
-		  </div>
+
+			<br>
+			<script>
+				// Initialize
+				startLoading()
+			</script>
+		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-		<script src="/peggame.js"></script>
 		<script src="/index.js"></script>
 
 	</body>

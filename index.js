@@ -1,3 +1,58 @@
+
+function addNavBar(activePage){
+	let navBar=document.getElementById("muhNavBar");
+	navBar.innerHTML=`
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/"><span  id="logoF">Fluffy</span><span id="logoJ">Jambe</span></a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a id="navHome" class="nav-link" aria-current="page" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a id="navGames" class="nav-link" href="/games.html">Games</a>
+				</li>
+				<li class="nav-item">
+					<a id="navRecipes" class="nav-link" href="/recipes.html">Recipes</a>
+				</li>
+				<li class="nav-item">
+					<a id="navMisc" class="nav-link" href="/misc.html">Misc</a>
+				</li>
+				<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				Quick Links 
+				</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<li><a class="dropdown-item" href="https://where-wulf.herokuapp.com/">Where Wulf</a></li>
+						<li><a id="navSawTown" class="dropdown-item" href="/games/sawtown">Saw Town</a></li>
+						<li><a id="navSawTownHex" class="dropdown-item" href="/games/sawtownhex">Saw Town Hex</a></li>
+						<li><a id="navTttoes" class="dropdown-item" href="/tttoes.html">Tic-Tac-Toe</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>`
+	document.getElementById("nav"+activePage).classList.add("active");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function formatRecipe(){
 	let inbox = document.getElementById("recInput");
 	let lines = inbox.value.split('\n');

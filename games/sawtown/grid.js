@@ -88,7 +88,7 @@ class Cell{
 
 
 const treeIMG= Array(4).fill("0").map(()=> new Image() )
-treeIMG.forEach((row,i)=>row.src=`./sawtown/img/tree${i+1}.png`);
+treeIMG.forEach((row,i)=>row.src=`img/tree${i+1}.png`);
 treeIMG[4]=treeIMG[3];
 class Tree extends Cell{
 	constructor(c){
@@ -175,7 +175,7 @@ class BadGrass extends Cell{
 
 
 const axeIMG= new Image();
-axeIMG.src="./sawtown/img/axe.png";
+axeIMG.src="img/axe.png";
 class Axe extends Cell{
 	constructor(c){
 		super(c.x,c.y,c.x32,c.y32);
@@ -256,7 +256,7 @@ class Axe extends Cell{
 
 
 const sawIMG= new Image();
-sawIMG.src="./sawtown/img/saw.png";
+sawIMG.src="img/saw.png";
 class Saw extends Cell{
 	constructor(c){
 		super(c.x,c.y,c.x32,c.y32);
@@ -288,7 +288,7 @@ class Saw extends Cell{
 
 
 const fireIMG= new Image();
-fireIMG.src="./sawtown/img/fire.png";
+fireIMG.src="img/fire.png";
 class Fire extends Cell{
 	constructor(c){
 		super(c.x,c.y,c.x32,c.y32);
