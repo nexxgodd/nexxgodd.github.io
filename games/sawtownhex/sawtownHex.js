@@ -161,8 +161,7 @@ var previousTime=(new Date).getTime();
 var frameCount=0;
 var fps='';
 
-const hexIMG= new Image();
-hexIMG.src="img/hex64.png";
+
 function runGame(){
 	
 	var time=(new Date).getTime();
@@ -185,14 +184,61 @@ function runGame(){
 	canvas.fillStyle = COLOR.grassGreen;
 	canvas.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-	for(var y=0;y<gameCanvas.height;y+=48){
-		for(var x=((y+48)%32)*2;x<gameCanvas.width;x+=64){
+	drawHexs(canvas, 48, 
+		8,gameCanvas.width,//X
+		80,gameCanvas.height,//Y
+		true);
+	
+	
+}
 
+const hexIMG= new Image();
+hexIMG.src="img/hex48.png";
+function drawHexs(canvas, width,xStart,xEnd,yStart,yEnd, isFirstOffset){
+	var downOffset=(width/4)*3;
+	var sideOffset=width/2;
+	for(var y=yStart;y+width-1<yEnd;y+=downOffset){
+		for(var x=((y-yStart)%sideOffset!=0)==isFirstOffset?xStart:xStart+sideOffset;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
 			canvas.drawImage(hexIMG, x,y);
 		}
 	}
+
+
+	let mouseOffset=(mouse.y-yStart)
+	if(mouseOffset>=0){
+		let chunkOffset=sideOffset/2;
+
+		canvas.beginPath();
+		let test=Math.floor(mouseOffset/downOffset)
+		let chunk=Math.floor((mouseOffset/chunkOffset)%3)
+		drawText(canvas,test,false,5,5)
+		drawText(canvas,chunk===0?"triangle":"square",false,100,5)
+		canvas.strokeStyle="red";
+
+		if(chunk===0){
+			canvas.rect(0, yStart+test*downOffset, gameCanvas.width,chunkOffset);
+		}
+		else{
+			canvas.rect(0, yStart+test*downOffset+chunkOffset, gameCanvas.width,sideOffset);
+		}
+		canvas.stroke();
+	}
 }
 
+
+
+
+function drawText(g, stringValue, isCentered, x, y){
+    g.font = "30px Arial";
+    g.fillStyle = "#FFF";
+    if (isCentered){
+		g.textAlign="center";
+	}
+	else{
+		g.textAlign="start"
+	}
+	g.fillText(stringValue, x, y+30);
+}
 
 class Mouse{
 	constructor(){
