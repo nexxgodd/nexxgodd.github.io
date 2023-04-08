@@ -194,33 +194,66 @@ function runGame(){
 
 const hexIMG= new Image();
 hexIMG.src="img/hex48.png";
+const redHexIMG=new Image();
+redHexIMG.src="img/hex50red.png"
 function drawHexs(canvas, width,xStart,xEnd,yStart,yEnd, isFirstOffset){
-	var downOffset=(width/4)*3;
-	var sideOffset=width/2;
+	let chunkOffset=width/4
+	var downOffset=chunkOffset*3;
+	var sideOffset=chunkOffset*2;
 	for(var y=yStart;y+width-1<yEnd;y+=downOffset){
 		for(var x=((y-yStart)%sideOffset!=0)==isFirstOffset?xStart:xStart+sideOffset;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
 			canvas.drawImage(hexIMG, x,y);
 		}
 	}
+	xEnd=Math.floor((xEnd-xStart)/width)*width+xStart
+	yEnd=y+chunkOffset;
+	console.log(y);
 
-
-	let mouseOffset=(mouse.y-yStart)
-	if(mouseOffset>=0){
-		let chunkOffset=sideOffset/2;
+	let mouseOffsetY=mouse.y-yStart
+	let mouseOffsetX=mouse.x-xStart
+	if(mouseOffsetY>=0&&mouseOffsetX>=0&&mouse.y<yEnd&&mouse.x<xEnd){
 
 		canvas.beginPath();
-		let test=Math.floor(mouseOffset/downOffset)
-		let chunk=Math.floor((mouseOffset/chunkOffset)%3)
-		drawText(canvas,test,false,5,5)
+		let row=Math.floor(mouseOffsetY/downOffset)
+		let column="?"
+		let chunk=Math.floor((mouseOffsetY/chunkOffset)%3)
+		// let out=;
 		drawText(canvas,chunk===0?"triangle":"square",false,100,5)
 		canvas.strokeStyle="red";
 
+		let evenOdd=isFirstOffset?0:1;
+		let mouseRowOffset=row%2===evenOdd?sideOffset:0;
+
+		//triangles
 		if(chunk===0){
-			canvas.rect(0, yStart+test*downOffset, gameCanvas.width,chunkOffset);
+			// canvas.rect(0, yStart+row*downOffset, gameCanvas.width,chunkOffset);
+			let chunkX=(mouseOffsetX+mouseRowOffset)%width
+			let chunkY=mouseOffsetY%downOffset
+			if(chunkX<sideOffset){
+				if(chunkX<(chunkOffset-chunkY)*2){
+					row--;
+					mouseRowOffset=row%2===evenOdd?sideOffset:0;
+				}
+			}
+			else{
+				if(chunkY*2<chunkX-sideOffset){
+					row--;
+					mouseRowOffset=row%2===evenOdd?sideOffset:0;
+				}
+			}
 		}
-		else{
-			canvas.rect(0, yStart+test*downOffset+chunkOffset, gameCanvas.width,sideOffset);
-		}
+		//squares
+		
+		// canvas.rect(0, yStart+row*downOffset+chunkOffset, gameCanvas.width,sideOffset);
+		column=Math.floor((mouseOffsetX-mouseRowOffset)/width)
+
+		let myY=yStart+row*downOffset-1;
+		let myX=xStart+column*width+mouseRowOffset-1;
+		canvas.drawImage(redHexIMG, myX, myY);
+
+		column+=Math.floor((row+evenOdd)/2)
+
+		drawText(canvas,"("+column+","+row+")",false,5,5)
 		canvas.stroke();
 	}
 }
