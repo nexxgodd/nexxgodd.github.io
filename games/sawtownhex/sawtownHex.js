@@ -32,7 +32,7 @@ const COLOR={menuPurple:"#6d045f",menuDarkGray:"#575757",menuLightGray:"#747474"
 // const UPGRADE_BUFFER_32=UPGRADE_BUFFER+32;
 // var upgradeArray=[];
 
-// var mouse;
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * *\
 |*                    SETUP                    *|
@@ -51,6 +51,10 @@ function startLoading(){
 
 	// setupBasicVariables();
 	mouse=new Mouse();
+	hexGrid=new HexGrid(48, 
+		8,gameCanvas.width,//X
+		80,gameCanvas.height-8,//Y
+		false,true);
 
 	//loop
 	gameInterval = setInterval(hasLoaded, 250);	
@@ -58,84 +62,8 @@ function startLoading(){
 
 function setupBasicVariables(){
 
-	//grid setup
-	let gridLeft=0;
-	let gridRight=gameCanvas.width-RIGHT*32+gridLeft;
-	let gridTop=TOP*32+gridLeft;
-	let gridBot=gameCanvas.height-gridLeft;
-	gridBox=new Box(gridLeft,gridRight,gridTop,gridBot);
-	setupGrid((gridBox.width)/32,(gridBox.height)/32,gridBox.left,gridBox.top);
-
-	//preview setup
-	let preLeft=gridBox.right+WINDOW_BUFFER;
-	let preRight=gameCanvas.width;
-	let preTop=0;
-	let preBot=gameCanvas.height/2-PRE_BOT_MOD*32;
-	previewBox=new Box(preLeft,preRight,preTop,preBot);
-	let preW=32*4;
-	let preX=preLeft+(previewBox.width-preW)/2;
-	let preY=preX-previewBox.left-4;
-	previewImgBox=new Box(preX,preX+preW,preY,preY+preW);
-
-	RIGHT_MIDDLE=preLeft+previewBox.width/2;
-
-	//upgrade setup
-	upgradeBox=new Box(preLeft,preRight, preBot+WINDOW_BUFFER ,gameCanvas.height);
-	const upgradeWidth=4;
-	const upgradeHeight=7;
-	const upgradeBuffer2=Math.floor((previewBox.width-UPGRADE_BUFFER-upgradeWidth*(UPGRADE_BUFFER_32))/2);
-	const upgradeBot=gameCanvas.height-upgradeBuffer2;
-	const upgradeTop=upgradeBot-UPGRADE_BUFFER-upgradeHeight*(UPGRADE_BUFFER_32);
-	upgradeInnerBox=new Box(preLeft+upgradeBuffer2,preRight-upgradeBuffer2,upgradeTop,upgradeBot);
-
-	upgradeModifiers={globalWoodMultiplier:1, clickMultiplier:1,  axeMultiplier:1, fireMultiplier:0};
-	addToUpgrades(new Upgrade("Extra Clicker",treeIMG[0],100,"Double the wood gained from clicking.",
-		()=>upgradeModifiers.clickMultiplier*=2));
-	addToUpgrades(new Upgrade("Double Axe",axeIMG,200,"Double the wood gained from axes.",
-		()=>upgradeModifiers.axeMultiplier*=2));
-	addToUpgrades(new Upgrade("Fire Power",fireIMG,500,"Collect wood from full grown trees when burnt.",
-		()=>{
-			upgradeModifiers.fireMultiplier+=1;
-			addToUpgrades(new Upgrade("Fire Power",fireIMG,5000,"Double the wood gained from fire.",
-				()=>upgradeModifiers.fireMultiplier*=2));
-		}
-			));
-	addToUpgrades(new Upgrade("Global increase",sawIMG,500,"Double the wood gained from all sources.",
-		()=>upgradeModifiers.globalWoodMultiplier*=2));
 	
-		addToUpgrades(new Upgrade("Extra Clicker",treeIMG[1],1000,"Double the wood gained from clicking.",
-		()=>upgradeModifiers.clickMultiplier*=2));
-	addToUpgrades(new Upgrade("Double Axe",axeIMG,2000,"Double the wood gained from axes.",
-		()=>upgradeModifiers.axeMultiplier*=2));
-	addToUpgrades(new Upgrade("Global increase",sawIMG,5000,"Double the wood gained from all sources.",
-		()=>upgradeModifiers.globalWoodMultiplier*=2));
-	
-	//menu setup
-	menuBox=new Box(0,gridRight,0,gridTop-WINDOW_BUFFER);
-
-	const shopCount=10;
-	const shopBuffer2=SHOP_BUFFER/2;
-	SHOP_TOP=menuBox.height/2-16-shopBuffer2;
-	let shopBot=menuBox.bottom-SHOP_TOP;
-	let shopRight=menuBox.right-SHOP_TOP;
-	let shopLeft=shopRight-shopCount*(32+SHOP_BUFFER);
-	shopBox= new Box(shopLeft,shopRight,SHOP_TOP,shopBot);
-	SHOP_TOP+=shopBuffer2;
-
-	shopLeft+=shopBuffer2
-	shopArray.push(new StoreItem("Tree",Tree,treeIMG[0],shopLeft,0,"Plant some baby trees and watch the grow."));
-	shopLeft+=32+SHOP_BUFFER;
-	shopArray.push(new StoreItem("Axe",Axe,axeIMG,shopLeft,15,"Why chop wood by hand."));
-	shopLeft+=32+SHOP_BUFFER;
-	shopArray.push(new StoreItem("Saw",Saw,sawIMG,shopLeft,100,"IDK what this does."));
-	shopLeft+=32+SHOP_BUFFER;
-	shopArray.push(new StoreItem("Fire",Fire,fireIMG,shopLeft,0,"Watch the world burn."));
-	SHOP_ENUM={"Tree":0,"Axe":1,"Saw":2,"Fire":3};
-
-	shopSelection=shopArray[0];
-	
-	//mouse
-	mouse=new Mouse();//needs constants set first
+	//mouse=new Mouse();//needs constants set first
 }
 
 
@@ -186,7 +114,7 @@ function runGame(){
 
 	drawHexs(canvas, 48, 
 		8,gameCanvas.width,//X
-		80,gameCanvas.height,//Y
+		88,gameCanvas.height,//Y
 		true);
 	
 	
@@ -197,16 +125,16 @@ hexIMG.src="img/hex48.png";
 const redHexIMG=new Image();
 redHexIMG.src="img/hex50red.png"
 function drawHexs(canvas, width,xStart,xEnd,yStart,yEnd, isFirstOffset){
-	let chunkOffset=width/4
-	var downOffset=chunkOffset*3;
-	var sideOffset=chunkOffset*2;
-	for(var y=yStart;y+width-1<yEnd;y+=downOffset){
-		for(var x=((y-yStart)%sideOffset!=0)==isFirstOffset?xStart:xStart+sideOffset;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
+	let quarterHex=width/4
+	var halfHex=quarterHex*2;
+	var threeQuarterHex=quarterHex*3;
+	for(var y=yStart;y+width<=yEnd;y+=threeQuarterHex){
+		for(var x=((y-yStart)%halfHex!=0)==isFirstOffset?xStart:xStart+halfHex;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
 			canvas.drawImage(hexIMG, x,y);
 		}
 	}
 	xEnd=Math.floor((xEnd-xStart)/width)*width+xStart
-	yEnd=y+chunkOffset;
+	yEnd=y+quarterHex;
 	console.log(y);
 
 	let mouseOffsetY=mouse.y-yStart
@@ -214,46 +142,52 @@ function drawHexs(canvas, width,xStart,xEnd,yStart,yEnd, isFirstOffset){
 	if(mouseOffsetY>=0&&mouseOffsetX>=0&&mouse.y<yEnd&&mouse.x<xEnd){
 
 		canvas.beginPath();
-		let row=Math.floor(mouseOffsetY/downOffset)
+		let row=Math.floor(mouseOffsetY/threeQuarterHex)
 		let column="?"
-		let chunk=Math.floor((mouseOffsetY/chunkOffset)%3)
+		let chunk=Math.floor((mouseOffsetY/quarterHex)%3)
 		// let out=;
-		drawText(canvas,chunk===0?"triangle":"square",false,100,5)
+		drawText(canvas,chunk===0?"triangle":"square",false,150,5)
 		canvas.strokeStyle="red";
 
 		let evenOdd=isFirstOffset?0:1;
-		let mouseRowOffset=row%2===evenOdd?sideOffset:0;
+		let mouseRowOffset=row%2===evenOdd?halfHex:0;
 
 		//triangles
 		if(chunk===0){
-			// canvas.rect(0, yStart+row*downOffset, gameCanvas.width,chunkOffset);
+			// canvas.rect(0, yStart+row*threeQuarterHex, gameCanvas.width,quarterHex);
 			let chunkX=(mouseOffsetX+mouseRowOffset)%width
-			let chunkY=mouseOffsetY%downOffset
-			if(chunkX<sideOffset){
-				if(chunkX<(chunkOffset-chunkY)*2){
+			let chunkY=mouseOffsetY%threeQuarterHex
+			if(chunkX<halfHex){
+				if(chunkX<(quarterHex-chunkY)*2){
 					row--;
-					mouseRowOffset=row%2===evenOdd?sideOffset:0;
+					mouseRowOffset=row%2===evenOdd?halfHex:0;
 				}
 			}
 			else{
-				if(chunkY*2<chunkX-sideOffset){
+				if(chunkY*2<chunkX-halfHex){
 					row--;
-					mouseRowOffset=row%2===evenOdd?sideOffset:0;
+					mouseRowOffset=row%2===evenOdd?halfHex:0;
 				}
 			}
 		}
 		//squares
 		
-		// canvas.rect(0, yStart+row*downOffset+chunkOffset, gameCanvas.width,sideOffset);
+		// canvas.rect(0, yStart+row*threeQuarterHex+quarterHex, gameCanvas.width,halfHex);
 		column=Math.floor((mouseOffsetX-mouseRowOffset)/width)
 
-		let myY=yStart+row*downOffset-1;
-		let myX=xStart+column*width+mouseRowOffset-1;
-		canvas.drawImage(redHexIMG, myX, myY);
+		let a=hexGrid.get(row,column);
+		if(a){
+			canvas.drawImage(redHexIMG, a.x-1, a.y-1);
+		drawText(canvas,a,false,5,5)
 
-		column+=Math.floor((row+evenOdd)/2)
+		}
+		// let myY=yStart+row*threeQuarterHex-1;
+		// let myX=xStart+column*width+mouseRowOffset-1;
+		// canvas.drawImage(redHexIMG, myX, myY);
 
-		drawText(canvas,"("+column+","+row+")",false,5,5)
+		// column+=Math.floor((row+evenOdd)/2)
+		// drawText(canvas,hexGrid.hexGridArray[row][column],false,5,5)
+		// drawText(canvas,"("+column+","+row+")",false,5,5)
 		canvas.stroke();
 	}
 }
@@ -272,6 +206,128 @@ function drawText(g, stringValue, isCentered, x, y){
 	}
 	g.fillText(stringValue, x, y+30);
 }
+
+//corners are rounded and always has odd number of rows
+class HexGrid{
+	constructor(tileWidth, xStart,xEnd, yStart,yEnd, isLeftJustified,isBottomJustified){
+		this.tileWidth=tileWidth;
+		this.xStart=xStart;
+		this.xEnd=xEnd;
+		this.yStart=yStart;
+		this.yEnd=yEnd;
+
+		this.quarterHex=tileWidth/4;
+		this.halfHex=this.quarterHex*2;
+		this.threeQuarterHex=this.quarterHex*3;
+
+		let width=(xEnd-xStart);
+		this.columns=Math.floor(width/tileWidth);
+		let xTrim=width-this.columns*tileWidth;
+		if(isLeftJustified){this.xStart+=xTrim}
+		else{this.xEnd-=xTrim}
+
+		let height=yEnd-yStart;
+		this.rows=Math.floor((height-this.quarterHex)/this.threeQuarterHex)
+		let yTrim=height-(this.rows*this.threeQuarterHex+this.quarterHex);
+		if(isBottomJustified){this.yStart+=yTrim}
+		else{this.yEnd-=yTrim}
+		this.setupArray();
+	}
+	setupArray(){
+		this.hexGridArray=[];
+		for(let r=this.rows-1;r>=0;r--){
+			let ry=r*this.threeQuarterHex+this.yStart
+			let offsetX=(r+1)%2*this.halfHex;
+			this.hexGridArray[r]=[];
+			for(let c=this.columns-(2-r%2);c>=0;c--){
+				let rx=c*this.tileWidth+offsetX+this.xStart
+				this.hexGridArray[r][c]=new HexTile(rx,ry);
+			}
+		}
+		console.log(this.hexGridArray);
+	}
+	get(row,col){
+		if(row<0||row>=this.rows||col<0||col>=this.columns-(1-row%2)){
+			return null;
+		}
+		return this.hexGridArray[row][col];
+	}
+
+	draw(canvas){
+		// for(var y=yStart;y+width<=yEnd;y+=this.threeQuarterHex){
+		// 	for(var x=((y-yStart)%halfHex!=0)==isFirstOffset?xStart:xStart+halfHex;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
+		// 		canvas.drawImage(hexIMG, x,y);
+		// 	}
+		// }
+		// xEnd=Math.floor((xEnd-xStart)/width)*width+xStart
+		// yEnd=y+quarterHex;
+		// console.log(y);
+
+		// let mouseOffsetY=mouse.y-yStart
+		// let mouseOffsetX=mouse.x-xStart
+		if(mouseOffsetY>=0&&mouseOffsetX>=0&&mouse.y<yEnd&&mouse.x<xEnd){
+
+			// canvas.beginPath();
+			// let row=Math.floor(mouseOffsetY/threeQuarterHex)
+			// let column="?"
+			// let chunk=Math.floor((mouseOffsetY/quarterHex)%3)
+			// // let out=;
+			// drawText(canvas,chunk===0?"triangle":"square",false,100,5)
+			// canvas.strokeStyle="red";
+
+			// let evenOdd=isFirstOffset?0:1;
+			// let mouseRowOffset=row%2===evenOdd?halfHex:0;
+
+			//triangles
+			// if(chunk===0){
+			// 	// canvas.rect(0, yStart+row*threeQuarterHex, gameCanvas.width,quarterHex);
+			// 	let chunkX=(mouseOffsetX+mouseRowOffset)%width
+			// 	let chunkY=mouseOffsetY%threeQuarterHex
+			// 	if(chunkX<halfHex){
+			// 		if(chunkX<(quarterHex-chunkY)*2){
+			// 			row--;
+			// 			mouseRowOffset=row%2===evenOdd?halfHex:0;
+			// 		}
+			// 	}
+			// 	else{
+			// 		if(chunkY*2<chunkX-halfHex){
+			// 			row--;
+			// 			mouseRowOffset=row%2===evenOdd?halfHex:0;
+			// 		}
+			// 	}
+			// }
+			//squares
+			
+			// canvas.rect(0, yStart+row*threeQuarterHex+quarterHex, gameCanvas.width,halfHex);
+			// column=Math.floor((mouseOffsetX-mouseRowOffset)/width)
+
+			// let myY=yStart+row*threeQuarterHex-1;
+			// let myX=xStart+column*width+mouseRowOffset-1;
+			// canvas.drawImage(redHexIMG, myX, myY);
+
+			// column+=Math.floor((row+evenOdd)/2)
+
+			// drawText(canvas,"("+column+","+row+")",false,5,5)
+			// canvas.stroke();
+		}
+	}
+}
+
+class HexTile{
+	constructor(x,y){
+		this.x=x;
+		this.y=y;
+	}
+	setNeighbors(){
+
+	}
+	toString(){
+		return "("+this.x+","+this.y+")";
+	}
+}
+
+
+
 
 class Mouse{
 	constructor(){
