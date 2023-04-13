@@ -46,7 +46,7 @@ function startLoading(){
 
 	// eventCatcherDiv events go here
 	eventCatcherDiv.addEventListener("mousemove", canvasMove);//mousemove
-	eventCatcherDiv.addEventListener("click", canvasClick);//mousemove
+	eventCatcherDiv.addEventListener("click", canvasClick);//mouseclick
 
     gameCanvas = document.getElementById("GraphicsBox");
 

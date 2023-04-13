@@ -2,6 +2,7 @@
 
 var eventCatcherDiv;
 var gameCanvas;
+var gameContent;
 var gameInterval;
 const COLOR={menuPurple:"#6d045f",menuDarkGray:"#575757",menuLightGray:"#747474",grassGreen:"#199607"}
 // var sampleColor;
@@ -42,6 +43,7 @@ function startLoading(){
 
 	// eventCatcherDiv events go here
 	eventCatcherDiv.addEventListener("mousemove", canvasMove);//mousemove
+	eventCatcherDiv.addEventListener("click", canvasClick);//mouseclick
 
     gameCanvas = document.getElementById("GraphicsBox");
 
@@ -50,11 +52,11 @@ function startLoading(){
 
 
 	// setupBasicVariables();
-	mouse=new Mouse();
 	hexGrid=new HexGrid(48, 
 		8,gameCanvas.width,//X
 		80,gameCanvas.height-8,//Y
 		false,true);
+	mouse=new Mouse();
 
 	//loop
 	gameInterval = setInterval(hasLoaded, 250);	
@@ -77,9 +79,12 @@ function hasLoaded(){
 
 function canvasMove(E){
     // E = E || window.event;
-	mouse.set(E.layerX,E.layerY);
+	mouse.update(E.layerX,E.layerY);
 }
 
+function canvasClick(E){
+	mouse.click();
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * *\
@@ -100,97 +105,25 @@ function runGame(){
 		frameCount=0;
 		// updateGrid();
 		// mouse.updateSelection();
+		hexGrid.update();
 	}
 	else if(frameCount==1){
 		//check for new upgrades
 	}
 
-	let canvas=gameCanvas.getContext("2d");
-	// canvas.imageSmoothingEnabled= false;
+	gameContent=gameCanvas.getContext("2d");
 
-	canvas.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-	canvas.fillStyle = COLOR.grassGreen;
-	canvas.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+	gameContent.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+	gameContent.fillStyle = COLOR.grassGreen;
+	gameContent.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-	drawHexs(canvas, 48, 
-		8,gameCanvas.width,//X
-		88,gameCanvas.height,//Y
-		true);
+
 	
-	
+	hexGrid.draw();
+	mouse.draw();
 }
 
-const hexIMG= new Image();
-hexIMG.src="img/hex48.png";
-const redHexIMG=new Image();
-redHexIMG.src="img/hex50red.png"
-function drawHexs(canvas, width,xStart,xEnd,yStart,yEnd, isFirstOffset){
-	let quarterHex=width/4
-	var halfHex=quarterHex*2;
-	var threeQuarterHex=quarterHex*3;
-	for(var y=yStart;y+width<=yEnd;y+=threeQuarterHex){
-		for(var x=((y-yStart)%halfHex!=0)==isFirstOffset?xStart:xStart+halfHex;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
-			canvas.drawImage(hexIMG, x,y);
-		}
-	}
-	xEnd=Math.floor((xEnd-xStart)/width)*width+xStart
-	yEnd=y+quarterHex;
-	console.log(y);
 
-	let mouseOffsetY=mouse.y-yStart
-	let mouseOffsetX=mouse.x-xStart
-	if(mouseOffsetY>=0&&mouseOffsetX>=0&&mouse.y<yEnd&&mouse.x<xEnd){
-
-		canvas.beginPath();
-		let row=Math.floor(mouseOffsetY/threeQuarterHex)
-		let column="?"
-		let chunk=Math.floor((mouseOffsetY/quarterHex)%3)
-		// let out=;
-		drawText(canvas,chunk===0?"triangle":"square",false,150,5)
-		canvas.strokeStyle="red";
-
-		let evenOdd=isFirstOffset?0:1;
-		let mouseRowOffset=row%2===evenOdd?halfHex:0;
-
-		//triangles
-		if(chunk===0){
-			// canvas.rect(0, yStart+row*threeQuarterHex, gameCanvas.width,quarterHex);
-			let chunkX=(mouseOffsetX+mouseRowOffset)%width
-			let chunkY=mouseOffsetY%threeQuarterHex
-			if(chunkX<halfHex){
-				if(chunkX<(quarterHex-chunkY)*2){
-					row--;
-					mouseRowOffset=row%2===evenOdd?halfHex:0;
-				}
-			}
-			else{
-				if(chunkY*2<chunkX-halfHex){
-					row--;
-					mouseRowOffset=row%2===evenOdd?halfHex:0;
-				}
-			}
-		}
-		//squares
-		
-		// canvas.rect(0, yStart+row*threeQuarterHex+quarterHex, gameCanvas.width,halfHex);
-		column=Math.floor((mouseOffsetX-mouseRowOffset)/width)
-
-		let a=hexGrid.get(row,column);
-		if(a){
-			canvas.drawImage(redHexIMG, a.x-1, a.y-1);
-		drawText(canvas,a,false,5,5)
-
-		}
-		// let myY=yStart+row*threeQuarterHex-1;
-		// let myX=xStart+column*width+mouseRowOffset-1;
-		// canvas.drawImage(redHexIMG, myX, myY);
-
-		// column+=Math.floor((row+evenOdd)/2)
-		// drawText(canvas,hexGrid.hexGridArray[row][column],false,5,5)
-		// drawText(canvas,"("+column+","+row+")",false,5,5)
-		canvas.stroke();
-	}
-}
 
 
 
@@ -207,134 +140,31 @@ function drawText(g, stringValue, isCentered, x, y){
 	g.fillText(stringValue, x, y+30);
 }
 
-//corners are rounded and always has odd number of rows
-class HexGrid{
-	constructor(tileWidth, xStart,xEnd, yStart,yEnd, isLeftJustified,isBottomJustified){
-		this.tileWidth=tileWidth;
-		this.xStart=xStart;
-		this.xEnd=xEnd;
-		this.yStart=yStart;
-		this.yEnd=yEnd;
-
-		this.quarterHex=tileWidth/4;
-		this.halfHex=this.quarterHex*2;
-		this.threeQuarterHex=this.quarterHex*3;
-
-		let width=(xEnd-xStart);
-		this.columns=Math.floor(width/tileWidth);
-		let xTrim=width-this.columns*tileWidth;
-		if(isLeftJustified){this.xStart+=xTrim}
-		else{this.xEnd-=xTrim}
-
-		let height=yEnd-yStart;
-		this.rows=Math.floor((height-this.quarterHex)/this.threeQuarterHex)
-		let yTrim=height-(this.rows*this.threeQuarterHex+this.quarterHex);
-		if(isBottomJustified){this.yStart+=yTrim}
-		else{this.yEnd-=yTrim}
-		this.setupArray();
-	}
-	setupArray(){
-		this.hexGridArray=[];
-		for(let r=this.rows-1;r>=0;r--){
-			let ry=r*this.threeQuarterHex+this.yStart
-			let offsetX=(r+1)%2*this.halfHex;
-			this.hexGridArray[r]=[];
-			for(let c=this.columns-(2-r%2);c>=0;c--){
-				let rx=c*this.tileWidth+offsetX+this.xStart
-				this.hexGridArray[r][c]=new HexTile(rx,ry);
-			}
-		}
-		console.log(this.hexGridArray);
-	}
-	get(row,col){
-		if(row<0||row>=this.rows||col<0||col>=this.columns-(1-row%2)){
-			return null;
-		}
-		return this.hexGridArray[row][col];
-	}
-
-	draw(canvas){
-		// for(var y=yStart;y+width<=yEnd;y+=this.threeQuarterHex){
-		// 	for(var x=((y-yStart)%halfHex!=0)==isFirstOffset?xStart:xStart+halfHex;x+width-1<xEnd;x+=width){ //var x=((y+48)%32)*2
-		// 		canvas.drawImage(hexIMG, x,y);
-		// 	}
-		// }
-		// xEnd=Math.floor((xEnd-xStart)/width)*width+xStart
-		// yEnd=y+quarterHex;
-		// console.log(y);
-
-		// let mouseOffsetY=mouse.y-yStart
-		// let mouseOffsetX=mouse.x-xStart
-		if(mouseOffsetY>=0&&mouseOffsetX>=0&&mouse.y<yEnd&&mouse.x<xEnd){
-
-			// canvas.beginPath();
-			// let row=Math.floor(mouseOffsetY/threeQuarterHex)
-			// let column="?"
-			// let chunk=Math.floor((mouseOffsetY/quarterHex)%3)
-			// // let out=;
-			// drawText(canvas,chunk===0?"triangle":"square",false,100,5)
-			// canvas.strokeStyle="red";
-
-			// let evenOdd=isFirstOffset?0:1;
-			// let mouseRowOffset=row%2===evenOdd?halfHex:0;
-
-			//triangles
-			// if(chunk===0){
-			// 	// canvas.rect(0, yStart+row*threeQuarterHex, gameCanvas.width,quarterHex);
-			// 	let chunkX=(mouseOffsetX+mouseRowOffset)%width
-			// 	let chunkY=mouseOffsetY%threeQuarterHex
-			// 	if(chunkX<halfHex){
-			// 		if(chunkX<(quarterHex-chunkY)*2){
-			// 			row--;
-			// 			mouseRowOffset=row%2===evenOdd?halfHex:0;
-			// 		}
-			// 	}
-			// 	else{
-			// 		if(chunkY*2<chunkX-halfHex){
-			// 			row--;
-			// 			mouseRowOffset=row%2===evenOdd?halfHex:0;
-			// 		}
-			// 	}
-			// }
-			//squares
-			
-			// canvas.rect(0, yStart+row*threeQuarterHex+quarterHex, gameCanvas.width,halfHex);
-			// column=Math.floor((mouseOffsetX-mouseRowOffset)/width)
-
-			// let myY=yStart+row*threeQuarterHex-1;
-			// let myX=xStart+column*width+mouseRowOffset-1;
-			// canvas.drawImage(redHexIMG, myX, myY);
-
-			// column+=Math.floor((row+evenOdd)/2)
-
-			// drawText(canvas,"("+column+","+row+")",false,5,5)
-			// canvas.stroke();
-		}
-	}
-}
-
-class HexTile{
-	constructor(x,y){
-		this.x=x;
-		this.y=y;
-	}
-	setNeighbors(){
-
-	}
-	toString(){
-		return "("+this.x+","+this.y+")";
-	}
-}
 
 
 
-
+const redHexIMG=new Image();
+redHexIMG.src="img/hex50red.png";
 class Mouse{
 	constructor(){
-		this.set(0,0);
+		this.x=0;
+		this.y=0;
+		this.hexTile=null;
 	}
-	set(x,y){
+	update(x,y){
 		this.x=x;
 		this.y=y;
+		this.hexTile=hexGrid.getByCoordinate(this.x,this.y);
+		// console.log(this.hexTile);
+	}
+	draw(){
+		if(this.hexTile){
+			gameContent.drawImage(redHexIMG, this.hexTile.x-1, this.hexTile.y-1);
+			drawText(gameContent,this.hexTile.row+","+this.hexTile.column,false,5,5)
+		}
+	}
+	click(){
+		console.log(this.hexTile);
+		this.hexTile.click()
 	}
 }
