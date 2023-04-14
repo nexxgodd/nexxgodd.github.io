@@ -167,25 +167,35 @@ class Item{
 	end(){}
 }
 
-const treeIMG= new Image();
-treeIMG.src="img/tree.png";
+const MAX_TREE=6;
+const treeIMG=[];
+for(let i=MAX_TREE;i>=0;i--){
+	treeIMG[i]=new Image();
+	treeIMG[i].src="img/tree-"+i+".png";
+}
 class Tree extends Item{
 	constructor(parent){
 		super(parent);
 		this.age=0;
 	}
 	draw(){
-		gameContent.drawImage(treeIMG, this.parent.x,this.parent.y);
+		gameContent.drawImage(treeIMG[this.age], this.parent.x,this.parent.y);
 	}
 	update(){
-		if(this.age===4){
+		if(this.age===MAX_TREE){
+			// for(let neighbor of this.parent.neighbors){
+			// 	neighbor&&neighbor.click()
+			// }
+			let tempNeighbors =[]
 			for(let neighbor of this.parent.neighbors){
-				neighbor&&neighbor.click()
+				neighbor&&neighbor.item==null&&tempNeighbors.push(neighbor)
 			}
+			
+			tempNeighbors.length&&tempNeighbors[Math.floor(Math.random()*tempNeighbors.length)].click()
 		}
 	}
 	end(){
-		if(this.age<4){
+		if(this.age<MAX_TREE){
 			this.age++;
 		}
 	}
