@@ -234,6 +234,47 @@ function formatFish(){
 	//copyOutput();
 }
 
+function rollForInitiative(){
+	const RED="red"
+	const GREEN="green"
+	var list=document.getElementById("initiativeInput").value.trim().split("\n")
+	// var list2=[]
+	var color=GREEN
+	var out=""
+	for(var i=0;i<list.length;i++){
+		if(list[i]===""){
+			if(color===RED){
+				out="Too many spaces"
+				color="bad"
+				break
+			}
+			color=RED
+		}
+		else{
+			item=list[i].trim().split(" ")
+			if(item.length<2){
+				out="No number on line "+(i+1)
+				color="bad"
+				break
+			}
+			number=item.pop()
+			if(isNaN(parseInt(number))){
+				out="No number on line "+(i+1)
+				color="bad"
+				break
+			}
+			zero=(number.length==1) ? "0" : "";
+			item=item.join(" ")
+			list[i]=`<div nn="${zero}${number}" class="${color}">${number} ${item}</div>`
+		}
+	}
+	if(color==="bad"){
+		document.getElementById("initiativeOutput").innerHTML=out
+		return;
+	}
+	list.sort().reverse()
+	document.getElementById("initiativeOutput").innerHTML=list.join("\n")
+}
 
 
 

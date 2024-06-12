@@ -186,12 +186,16 @@ class Tree extends Item{
 			// for(let neighbor of this.parent.neighbors){
 			// 	neighbor&&neighbor.click()
 			// }
-			let tempNeighbors =[]
-			for(let neighbor of this.parent.neighbors){
-				neighbor&&neighbor.item==null&&tempNeighbors.push(neighbor)
+			// let tempNeighbors =[]
+			// for(let neighbor of this.parent.neighbors){
+			// 	neighbor&&neighbor.item==null&&tempNeighbors.push(neighbor)
+			// }
+			// tempNeighbors.length&&tempNeighbors[Math.floor(Math.random()*tempNeighbors.length)].click()
+
+			let neighbor = this.parent.neighbors[Math.floor(Math.random() * 6)];
+			if(neighbor&&neighbor.item==null){
+				neighbor.click()
 			}
-			
-			tempNeighbors.length&&tempNeighbors[Math.floor(Math.random()*tempNeighbors.length)].click()
 		}
 	}
 	end(){

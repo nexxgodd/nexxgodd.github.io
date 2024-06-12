@@ -54,7 +54,7 @@ function startLoading(){
 	// setupBasicVariables();
 	hexGrid=new HexGrid(48, 
 		8,gameCanvas.width,//X
-		80,gameCanvas.height-8,//Y
+		8,gameCanvas.height-8,//Y
 		false,true);
 	mouse=new Mouse();
 
