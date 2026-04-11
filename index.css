@@ -24,7 +24,7 @@ a{
 	/* background-color: black; */
 }
 
-.card{
+.card-buffer{
 	margin-top: 32px;
 }
 
@@ -294,3 +294,26 @@ td{
 	animation-duration: 1s;
 	animation-iteration-count: 1;
   }
+
+/****************************lego****************************/
+
+.start-card {
+    height: 200px;
+    width: 200px;
+	align-content: center;
+	justify-content: center;
+	font-weight: bold;
+	font-size: large;
+}
+.pointy {
+   cursor:pointer;
+}
+.mypics {
+	min-height: 0; 
+	object-fit: contain; 
+	flex: 1;
+   /* max-height: 70vh; */
+}
+.mylock {
+	font-size: 2.5rem;
+}

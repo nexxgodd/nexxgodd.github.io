@@ -31,6 +31,7 @@ function addNavBar(activePage){
 						<li><a id="navSawTown" class="dropdown-item" href="/games/sawtown">Saw Town</a></li>
 						<li><a id="navSawTownHex" class="dropdown-item" href="/games/sawtownhex">Saw Town Hex</a></li>
 						<li><a id="navTttoes" class="dropdown-item" href="/tttoes.html">Tic-Tac-Toe</a></li>
+						<li><a id="navLegoShraydz" class="dropdown-item" href="/games/character.html">Lego Sharaydz</a></li>
 					</ul>
 				</li>
 			</ul>
