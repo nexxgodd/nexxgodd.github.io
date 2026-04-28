@@ -1,0 +1,18 @@
+{
+	"maps":{
+		"test":{
+			"imageUrl": "test.png"
+		},
+		"Boat":{
+			"imageUrl": "Boat2.png",
+			"grid":{
+				"size":37,
+				"x1":4,
+				"y1":19,
+				"x2":1077,
+				"y2":352
+			}
+		}
+
+	}
+}

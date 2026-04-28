@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D Tactical Map</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IM+Fell+English:ital@0;1&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --cell: 40px;
+      --bg: #0e0c09;
+      --panel: #13110d;
+      --panel2: #1a1712;
+      --border: #2e2618;
+      --gold: #c8a44a;
+      --gold-dim: #614f22;
+      --text: #e5d5aa;
+      --dim: #7a6a45;
+      --red: #b83030;
+      --red-bg: #1e0808;
+      --t-floor: #3a2e1c;
+      --t-floor2: #443520;
+      --t-wall: #181410;
+      --t-water: #111f30;
+      --t-tree: #111a0c;
+      --t-grass: #182510;
+      --t-door: #4a3010;
+      --t-grid: rgba(255, 255, 255, 0.055);
+      --p0: #4a9eff;
+      --p1: #44dd88;
+      --p2: #cc55ff;
+      --p3: #ff9944;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IM Fell English', serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--gold-dim);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 3px;
+      white-space: nowrap;
+      text-shadow: 0 0 18px rgba(200, 164, 74, 0.4);
+    }
+
+    .vsep {
+      width: 1px;
+      height: 26px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .role-row {
+      display: flex;
+      gap: 5px;
+    }
+
+    .role-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      padding: 5px 11px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.15s;
+      border-radius: 2px;
+    }
+
+    .role-btn:hover {
+      border-color: var(--gold-dim);
+      color: var(--text);
+    }
+
+    .role-btn.active {
+      font-weight: 700;
+      color: #000;
+    }
+
+    .role-btn.dm.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+    }
+
+    .role-btn.rp0.active {
+      background: var(--p0);
+      border-color: var(--p0);
+    }
+
+    .role-btn.rp1.active {
+      background: var(--p1);
+      border-color: var(--p1);
+    }
+
+    .role-btn.rp2.active {
+      background: var(--p2);
+      border-color: var(--p2);
+    }
+
+    .role-btn.rp3.active {
+      background: var(--p3);
+      border-color: var(--p3);
+    }
+
+    .sync-wrap {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--dim);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #44aa44;
+      flex-shrink: 0;
+    }
+
+    .sdot.pulse {
+      animation: sdotpulse 0.6s ease-in-out infinite;
+    }
+
+    @keyframes sdotpulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.2
+      }
+    }
+
+    /* LAYOUT */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    body.validating .layout {
+      display: none;
+    }
+
+    body.validating .login {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .login {
+      display: none;
+    }
+
+
+    /* MAP */
+    .map-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: auto;
+      padding: 14px;
+      gap: 8px;
+    }
+
+    .map-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .grid-wrap {
+      position: relative;
+      border: 2px solid var(--gold-dim);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .cell {
+      width: var(--cell);
+      height: var(--cell);
+      border-right: 1px solid var(--t-grid);
+      border-bottom: 1px solid var(--t-grid);
+      cursor: pointer;
+      position: relative;
+      transition: filter 0.08s;
+    }
+
+    .cell:hover {
+      filter: brightness(1.5);
+    }
+
+    .cell.blocked {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .cell.hint-move {
+      box-shadow: inset 0 0 0 2px rgba(200, 164, 74, 0.5);
+      cursor: crosshair;
+    }
+
+    .cell.hint-place {
+      box-shadow: inset 0 0 0 2px rgba(184, 48, 48, 0.6);
+      cursor: crosshair;
+    }
+
+    .t0 {
+      background: var(--t-floor);
+    }
+
+    .t0:nth-child(odd) {
+      background: var(--t-floor2);
+    }
+
+    .t1 {
+      background: var(--t-wall);
+    }
+
+    .t1::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0.25) 2px, transparent 2px, transparent 7px);
+      pointer-events: none;
+    }
+
+    .t2 {
+      background: var(--t-water);
+    }
+
+    .t2::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-40deg, rgba(40, 100, 170, 0.25) 0, rgba(40, 100, 170, 0.25) 1px, transparent 1px, transparent 5px);
+      animation: wave 2s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes wave {
+      from {
+        background-position: 0 0
+      }
+
+      to {
+        background-position: 10px 10px
+      }
+    }
+
+    .t3 {
+      background: var(--t-tree);
+    }
+
+    .t3::after {
+      content: '▲';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #2a4a1a;
+      pointer-events: none;
+      font-style: normal;
+    }
+
+    .t4 {
+      background: var(--t-grass);
+    }
+
+    .t4::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(30, 60, 15, 0.2) 0, rgba(30, 60, 15, 0.2) 1px, transparent 1px, transparent 8px);
+      pointer-events: none;
+    }
+
+    .t5 {
+      background: var(--t-door);
+    }
+
+    .t5::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(180, 120, 50, 0.4);
+      pointer-events: none;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .red {
+      color: red;
+    }
+
+    /* TOKEN LAYER */
+    .token-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .token {
+      position: absolute;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      user-select: none;
+      z-index: 5;
+      transition: top 0.2s ease, left 0.2s ease, transform 0.12s;
+      font-size: 1rem;
+    }
+
+    .token:hover {
+      transform: scale(1.12);
+      z-index: 15;
+    }
+
+    .token.sel {
+      border-color: #fff;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5), 0 2px 10px rgba(0, 0, 0, 0.9);
+      transform: scale(1.12);
+      z-index: 20;
+      animation: tpulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes tpulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5)
+      }
+
+      50% {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.8)
+      }
+    }
+
+    .token-lbl {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.48rem;
+      font-family: 'Cinzel', serif;
+      white-space: nowrap;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.88);
+      padding: 1px 4px;
+      border-radius: 2px;
+      pointer-events: none;
+      letter-spacing: 0.4px;
+    }
+
+    .tp0 {
+      background: radial-gradient(circle at 38% 35%, #7cc0ff, #1a6fcc);
+    }
+
+    .tp1 {
+      background: radial-gradient(circle at 38% 35%, #88ffcc, #1a9955);
+    }
+
+    .tp2 {
+      background: radial-gradient(circle at 38% 35%, #ee88ff, #8822cc);
+    }
+
+    .tp3 {
+      background: radial-gradient(circle at 38% 35%, #ffcc88, #cc7710);
+    }
+
+    .tm {
+      background: radial-gradient(circle at 38% 35%, #4a1a1a, #160808);
+    }
+
+    .coords {
+      font-size: 0.72rem;
+      color: var(--dim);
+      letter-spacing: 1px;
+    }
+
+    /* SIDE PANEL */
+    .panel {
+      width: 228px;
+      background: var(--panel);
+      border-left: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .pb {
+      padding: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .plabel {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 2.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+
+    .map-list button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 7px 9px;
+      margin-bottom: 3px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--dim);
+      font-family: 'IM Fell English', serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      border-radius: 2px;
+    }
+
+    .map-list button:hover {
+      border-color: var(--gold-dim);
+      color: var(--text);
+    }
+
+    .map-list button.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(200, 164, 74, 0.07);
+    }
+
+    .mgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .mpick {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 6px 3px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .mpick:hover {
+      border-color: var(--red);
+    }
+
+    .mpick.active {
+      border-color: var(--red);
+      background: rgba(184, 48, 48, 0.12);
+    }
+
+    .mpick .me {
+      font-size: 1.25rem;
+      display: block;
+      line-height: 1.1;
+      margin-bottom: 2px;
+      font-style: normal;
+    }
+
+    .mpick .mn {
+      font-size: 0.52rem;
+      color: var(--dim);
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.5px;
+    }
+
+    .place-tip {
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-style: italic;
+      margin-top: 7px;
+      text-align: center;
+      display: none;
+    }
+
+    .tlist {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tli {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.12s;
+      font-size: 0.83rem;
+    }
+
+    .tli:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tli.sel {
+      background: rgba(200, 164, 74, 0.1);
+    }
+
+    .tli-icon {
+      font-size: 0.95rem;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      font-style: normal;
+    }
+
+    .tli-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tli-pos {
+      font-size: 0.68rem;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+
+    .delbtn {
+      background: none;
+      border: none;
+      color: var(--red);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 1px 3px;
+      opacity: 0.5;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .delbtn:hover {
+      opacity: 1;
+    }
+
+    .leg {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .leg-r {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .leg-s {
+      width: 15px;
+      height: 15px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .info {
+      font-size: 0.78rem;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    .dm-only {
+      display: none;
+    }
+
+    body.dm .dm-only {
+      display: block;
+    }
+
+    /* STATUS BAR */
+    .sbar {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      color: var(--dim);
+      display: flex;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .sbar strong {
+      color: var(--gold);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold-dim);
+      border-radius: 3px;
+    }
+
+    button:disabled{
+      color:rgb(192, 192, 192);
+    }
+    canvas {
+      display: block;
+    }
+
+  </style>
+</head>
+
+<body class="validating">
+  <header>
+    <div class="logo">⚔ DUNGEON MASTER'S ATLAS</div>
+    <!-- <div class="vsep"></div>
+  <div class="role-row" id="roleRow">
+    <button class="role-btn dm active" onclick="setRole('dm')">⚔ DM</button>
+    <button class="role-btn rp0" onclick="setRole('p0')">P1</button>
+    <button class="role-btn rp1" onclick="setRole('p1')">P2</button>
+    <button class="role-btn rp2" onclick="setRole('p2')">P3</button>
+    <button class="role-btn rp3" onclick="setRole('p3')">P4</button>
+  </div> -->
+    <div class="sync-wrap">
+      <!-- <div class="sdot" id="sdot"></div>
+    <span id="syncTxt">Live</span>
+    <span id="syncTxt">Live</span> -->
+      <button class="role-btn" onclick="logout()">Logout</button>
+
+    </div>
+  </header>
+
+
+
+
+
+  <div id="loginLayout" class="login">
+    <div>
+      <h2>Enter Realm</h2>
+      <form action="javascript:void(0);">
+
+        <div class="form-group">
+          <input type="text" id="charName" name="character_name" placeholder="Grog the Bold" required>
+          <label for="charName">Character Name</label>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="charEmoji" name="character_emoji" title="(Win+;) or (Cmd+Ctrl+Space)" placeholder="🤴" required>
+          <label for="charEmoji" title="(Win+;) or (Cmd+Ctrl+Space)">Character Emoji
+            <!-- <details>
+						<summary>Hint</summary>
+						Stop him
+					</details> -->
+            </label>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="serverUrl" name="server_url" placeholder="https://beholder-net.com" required>
+          <label for="serverUrl">Server URL</label>
+        </div>
+
+        <button id="loginButton" type="submit" onclick="login()">Connect</button>
+        <label id="errorLogin" class="red" hidden>Error: Something went wrong!</label>
+        <label id="errorEmoji" class="red" hidden>Error: Emoji must be a single emoji!</label>
+      </form>
+    </div>
+  </div>
+
+  <div class="layout">
+
+
+
+
+    <!-- <div hidden id="mainLayout"> -->
+    <div class="map-area">
+      <div class="map-title" id="mapTitle">The Dungeon</div>
+      <div class="grid-wrap" id="gridWrap">
+        <!-- <div class="grid" id="grid"></div>
+        <div class="token-layer" id="tokLayer"></div> -->
+        <canvas id="vttCanvas"></canvas>
+
+      </div>
+      <div class="coords" id="coords">Hover map — 1 square = 5 ft</div>
+    </div>
+
+    <div class="panel">
+      <div class="pb dm-only">
+        <details open>
+
+          <summary class="plabel">Maps</summary>
+          <div class="map-list" id="mapList"></div>
+        </details>
+
+      </div>
+
+      <div class="pb dm-only">
+        <details open>
+          <summary class="plabel">Spawn Monster</summary>
+          <div class="mgrid" id="mgrid">
+            <div class="mpick" onclick="selectMon('Goblin')" name="Goblin"><span class="me">👺</span><span class="mn">Goblin</span></div>
+            <div class="mpick" onclick="selectMon('Orc')" name="Orc"><span class="me">👊</span><span class="mn">Orc</span></div>
+            <div class="mpick" onclick="selectMon('Zombie')" name="Zombie"><span class="me">🧟</span><span class="mn">Zombie</span></div>
+            <div class="mpick" onclick="selectMon('Skeleton')" name="Skeleton"><span class="me">💀</span><span class="mn">Skeleton</span></div>
+            <div class="mpick" onclick="selectMon('Troll')" name="Troll"><span class="me">👹</span><span class="mn">Troll</span></div>
+            <div class="mpick" onclick="selectMon('Dragon')" name="Dragon"><span class="me">🐉</span><span class="mn">Dragon</span></div>
+            <div class="mpick" onclick="selectMon('Bandit')" name="Bandit"><span class="me">🗡</span><span class="mn">Bandit</span></div>
+            <div class="mpick" onclick="selectMon('Wolf')" name="Wolf"><span class="me">🐺</span><span class="mn">Wolf</span></div>
+            <div class="mpick" onclick="selectMon('Vampire')" name="Vampire"><span class="me">🧛</span><span class="mn">Vampire</span></div>
+          </div>
+          <div class="place-tip" id="placeTip">Click any open square to place</div>
+        </details>
+      </div>
+      
+      <div class="pb">
+        <div class="plabel">Creatures</div>
+        <div class="tlist" id="tlist"></div>
+      </div>
+
+      <!-- <div class="pb">
+        <div class="plabel">Terrain Legend</div>
+        <div class="leg">
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-floor)"></div>Stone Floor
+          </div>
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-wall)"></div>Wall / Rock
+          </div>
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-door)"></div>Door
+          </div>
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-grass)"></div>Grass
+          </div>
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-tree)"></div>Forest (blocking)
+          </div>
+          <div class="leg-r">
+            <div class="leg-s" style="background:var(--t-water)"></div>Water (blocking)
+          </div>
+        </div>
+      </div> -->
+      
+      <!-- <div class="pb">
+        <div class="plabel">How to Play</div>
+        <div class="info" id="howto">
+          Select your role above to begin.<br><br>
+          <strong style="color:var(--gold)">DM:</strong> Choose a map, spawn monsters by picking a type then clicking
+          the map. Click any token to select it, then click a square to move it.<br><br>
+          <strong style="color:var(--p0)">Players:</strong> Click your token, then click any open square to move.
+          Changes sync live across all sessions.
+        </div>
+      </div> -->
+
+    </div>
+    <!-- </div> -->
+  </div>
+
+
+  <div class="sbar">
+    <span>Role: <strong id="sbRole">DM</strong></span>
+    <span>Map: <strong id="sbMap">–</strong></span>
+    <span id="sbSel">Click a token to select</span>
+  </div>
+
+  <!-- <script>
+// ===== MAPS =====
+// Tile: 0=floor 1=wall 2=water 3=tree 4=grass 5=door
+const MAPS = [
+  { name:"The Dungeon", icon:"🏰",
+    grid:[
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,5,0,0,5,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
+      [1,1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,5,1,1,1],
+      [1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1],
+      [1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    ]},
+  { name:"Forest Clearing", icon:"🌲",
+    grid:[
+      [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+      [3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3],
+      [3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3],
+      [3,4,4,4,3,4,4,4,4,4,4,4,4,4,4,3,4,4,4,3],
+      [3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3],
+      [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+      [4,4,4,4,4,4,4,2,2,2,2,2,4,4,4,4,4,4,4,4],
+      [4,4,4,4,4,4,4,2,2,2,2,2,4,4,4,4,4,4,4,4],
+      [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+      [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+      [3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3],
+      [3,3,4,4,3,4,4,4,4,4,4,4,4,4,4,3,4,4,3,3],
+      [3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3],
+      [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+    ]},
+  { name:"The Tavern", icon:"🍺",
+    grid:[
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1],
+      [1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,5,1,1,1,1,1,1,1,1,1,1],
+    ]},
+  { name:"Dragon's Lair", icon:"🐉",
+    grid:[
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,1,1,0,0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,1],
+      [1,1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1],
+      [1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1],
+      [1,0,0,0,0,0,0,0,5,0,0,5,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+      [1,1,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,1,1],
+      [1,1,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,1,1],
+      [1,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+      [1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    ]},
+];
+// const ROWS = 14, COLS = 20, CELL = 40;
+
+// ===== MONSTERS =====
+const MONS = [
+  {name:'Goblin',   emoji:'👺', hp:7},   {name:'Orc',     emoji:'👊', hp:15},
+  {name:'Zombie',   emoji:'🧟', hp:22},  {name:'Skeleton',emoji:'💀', hp:13},
+  {name:'Troll',    emoji:'👹', hp:84},  {name:'Dragon',  emoji:'🐉', hp:256},
+  {name:'Bandit',   emoji:'🗡', hp:11},  {name:'Wolf',    emoji:'🐺', hp:11},
+  {name:'Vampire',  emoji:'🧛', hp:144},
+];
+const P_NAMES = ['Player 1','Player 2','Player 3','Player 4'];
+const P_EMO   = ['🛡','🏹','✨','⚔'];
+
+// ===== STATE =====
+let G = { mapIdx:0, tokens:[], nextId:10 };
+let role = 'dm';
+let selId = null;
+let placing = null;
+let syncTimer = null;
+let saveTimer = null;
+
+// ===== INIT =====
+async function init() {
+  buildMGrid(); buildMapList();
+  await loadState();
+  renderAll();
+  startSync();
+  document.body.classList.add('dm');
+}
+
+                // ===== STORAGE =====
+                async function loadState() {
+                  try {
+                    const r = await window.storage.get('dnd-v2', true);
+                    if (r && r.value) { G = JSON.parse(r.value); }
+                    else { spawnPlayers(); }
+                  } catch(e) { spawnPlayers(); }
+                }
+
+                function save() {
+                  clearTimeout(saveTimer);
+                  saveTimer = setTimeout(async () => {
+                    const dot = document.getElementById('sdot');
+                    dot.classList.add('pulse');
+                    try { await window.storage.set('dnd-v2', JSON.stringify(G), true); }
+                    catch(e) {}
+                    setTimeout(() => dot.classList.remove('pulse'), 400);
+                  }, 200);
+                }
+
+                function startSync() {
+                  clearInterval(syncTimer);
+                  syncTimer = setInterval(async () => {
+                    try {
+                      const r = await window.storage.get('dnd-v2', true);
+                      if (r && r.value) {
+                        const remote = JSON.parse(r.value);
+                        if (JSON.stringify(remote) !== JSON.stringify(G)) {
+                          G = remote; renderAll();
+                        }
+                      }
+                    } catch(e) {}
+                  }, 1500);
+                }
+
+                function walkable(t) { return t === 0 || t === 4 || t === 5; }
+
+                function spawnPlayers() {
+                  const map = MAPS[G.mapIdx];
+                  const open = [];
+                  for (let r=0; r<ROWS; r++) for (let c=0; c<COLS; c++)
+                    if (walkable(map.grid[r][c])) open.push({r,c});
+                  const step = Math.floor(open.length / 5);
+                  G.tokens = [];
+                  G.nextId = 10;
+                  for (let i=0; i<4; i++) {
+                    const p = open[step*(i+1)] || open[i] || open[0];
+                    G.tokens.push({id:G.nextId++, type:'player', pi:i, name:P_NAMES[i], emoji:P_EMO[i], col:p.c, row:p.r});
+                  }
+                  save();
+                }
+
+// ===== RENDER =====
+function renderAll() {
+  renderGrid(); renderTokens(); renderTList(); updateSB();
+}
+
+function renderGrid() {
+  const map = MAPS[G.mapIdx];
+  const g = document.getElementById('grid');
+  g.style.gridTemplateColumns = `repeat(${COLS}, ${CELL}px)`;
+  g.style.gridTemplateRows    = `repeat(${ROWS}, ${CELL}px)`;
+  g.innerHTML = '';
+  for (let r=0; r<ROWS; r++) {
+    for (let c=0; c<COLS; c++) {
+      const t = map.grid[r][c];
+      const el = document.createElement('div');
+      el.className = `cell t${t}${!walkable(t)?' blocked':''}`;
+      el.dataset.r = r; el.dataset.c = c;
+      el.addEventListener('click', () => onCell(r,c));
+      el.addEventListener('mouseenter', () => {
+        document.getElementById('coords').textContent =
+          `Col ${c}  Row ${r}   (${c*5} ft × ${r*5} ft)`;
+      });
+      g.appendChild(el);
+    }
+  }
+  document.getElementById('mapTitle').textContent = map.name.toUpperCase();
+  document.getElementById('sbMap').textContent = map.name;
+  const mlist = document.getElementById('mapList');
+  mlist.querySelectorAll('button').forEach((b,i) => b.classList.toggle('active', i===G.mapIdx));
+}
+
+function renderTokens() {
+  const layer = document.getElementById('tokLayer');
+  layer.innerHTML = '';
+  G.tokens.forEach(tok => {
+    const el = document.createElement('div');
+    el.className = `token ${tok.type==='player'?'tp'+tok.pi:'tm'}${tok.id===selId?' sel':''}`;
+    el.style.cssText = `left:${tok.col*CELL+2}px;top:${tok.row*CELL+2}px;width:${CELL-4}px;height:${CELL-4}px;`;
+    el.textContent = tok.emoji;
+    const lbl = document.createElement('div');
+    lbl.className = 'token-lbl'; lbl.textContent = tok.name;
+    el.appendChild(lbl);
+    el.addEventListener('click', e => { e.stopPropagation(); onToken(tok.id); });
+    layer.appendChild(el);
+  });
+  updateHints();
+}
+
+function updateHints() {
+  document.querySelectorAll('.cell').forEach(c => c.classList.remove('hint-move','hint-place'));
+  if (placing) {
+    document.querySelectorAll('.cell:not(.blocked)').forEach(c => c.classList.add('hint-place'));
+  } else if (selId) {
+    document.querySelectorAll('.cell:not(.blocked)').forEach(c => c.classList.add('hint-move'));
+  }
+}
+
+function renderTList() {
+  const list = document.getElementById('tlist');
+  list.innerHTML = '';
+  if (!G.tokens.length) { list.innerHTML = '<div class="info">No creatures on map</div>'; return; }
+  G.tokens.forEach(tok => {
+    const el = document.createElement('div');
+    el.className = `tli${tok.id===selId?' sel':''}`;
+    const isDM = role==='dm';
+    el.innerHTML = `
+      <div class="tli-icon">${tok.emoji}</div>
+      <div class="tli-name">${tok.name}</div>
+      <div class="tli-pos">${tok.col},${tok.row}</div>
+      ${isDM?`<button class="delbtn" title="Remove" onclick="event.stopPropagation();delToken(${tok.id})">✕</button>`:''}
+    `;
+    el.addEventListener('click', e => { if(!e.target.classList.contains('delbtn')) onToken(tok.id); });
+    list.appendChild(el);
+  });
+}
+
+function buildMapList() {
+  const list = document.getElementById('mapList');
+  list.innerHTML = '';
+  MAPS.forEach((m,i) => {
+    const b = document.createElement('button');
+    b.textContent = `${m.icon} ${m.name}`;
+    b.className = i===G.mapIdx?'active':'';
+    b.onclick = () => changeMap(i);
+    list.appendChild(b);
+  });
+}
+
+function buildMGrid() {
+  const g = document.getElementById('mgrid');
+  MONS.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'mpick'; el.dataset.n = m.name;
+    el.innerHTML = `<span class="me">${m.emoji}</span><span class="mn">${m.name}</span>`;
+    el.onclick = () => selectMon(m);
+    g.appendChild(el);
+  });
+}
+
+function updateSB() {
+  const roleNames = {dm:'Dungeon Master',p0:'Player 1',p1:'Player 2',p2:'Player 3',p3:'Player 4'};
+  document.getElementById('sbRole').textContent = roleNames[role];
+  const tok = G.tokens.find(t=>t.id===selId);
+  const sb = document.getElementById('sbSel');
+  if (tok) sb.innerHTML = `Selected: <strong>${tok.name}</strong> at (${tok.col}, ${tok.row})`;
+  else if (placing) sb.innerHTML = `Placing: <strong>${placing.emoji} ${placing.name}</strong>`;
+  else sb.textContent = 'Click a token to select';
+}
+
+// ===== INTERACTIONS =====
+function setRole(r) {
+  role = r;
+  selId = null; placing = null;
+  document.querySelectorAll('.mpick').forEach(e => e.classList.remove('active'));
+  document.getElementById('placeTip').style.display = 'none';
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  const rmap = {dm:0,p0:1,p1:2,p2:3,p3:4};
+  document.querySelectorAll('.role-btn')[rmap[r]].classList.add('active');
+  document.body.classList.toggle('dm', r==='dm');
+  renderAll();
+}
+
+function onToken(id) {
+  const tok = G.tokens.find(t=>t.id===id);
+  if (!tok) return;
+  if (role !== 'dm') {
+    const pi = parseInt(role[1]);
+    if (tok.type !== 'player' || tok.pi !== pi) return;
+  }
+  if (placing) { placing=null; document.querySelectorAll('.mpick').forEach(e=>e.classList.remove('active')); document.getElementById('placeTip').style.display='none'; }
+  selId = (selId===id) ? null : id;
+  renderTokens(); renderTList(); updateSB();
+}
+
+function onCell(row, col) {
+  const tile = MAPS[G.mapIdx].grid[row][col];
+  if (placing && walkable(tile)) { spawnMon(placing, row, col); return; }
+  if (selId && walkable(tile)) { moveToken(selId, row, col); return; }
+}
+
+function moveToken(id, row, col) {
+  const tok = G.tokens.find(t=>t.id===id);
+  if (!tok) return;
+  tok.row = row; tok.col = col;
+  selId = null; save(); renderAll();
+}
+
+function spawnMon(mon, row, col) {
+  G.tokens.push({id:G.nextId++, type:'monster', name:mon.name, emoji:mon.emoji, hp:mon.hp, maxHp:mon.hp, col, row});
+  save(); renderAll();
+}
+
+function delToken(id) {
+  G.tokens = G.tokens.filter(t=>t.id!==id);
+  if (selId===id) selId=null;
+  save(); renderAll();
+}
+
+function changeMap(idx) {
+  G.mapIdx = idx;
+  const map = MAPS[idx];
+  G.tokens = G.tokens.filter(tok => {
+    const t = map.grid[tok.row]?.[tok.col];
+    return t !== undefined && walkable(t);
+  });
+  selId = null; placing = null;
+  buildMapList(); save(); renderAll();
+}
+
+  function selectMon(mon) {
+    if (placing && placing.name===mon.name) {
+      placing=null;
+      document.querySelectorAll('.mpick').forEach(e=>e.classList.remove('active'));
+      document.getElementById('placeTip').style.display='none';
+    } else {
+      placing=mon; selId=null;
+      document.querySelectorAll('.mpick').forEach(e=>e.classList.toggle('active', e.dataset.n===mon.name));
+      document.getElementById('placeTip').style.display='block';
+    }
+    updateHints(); renderTokens(); updateSB();
+  }
+
+init();
+</script> -->
+
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="client.js"></script>
+</body>
+
+</html>
