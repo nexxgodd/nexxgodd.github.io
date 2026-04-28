@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D&D VTT MVP</title>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <div id="controls">
+        <button onclick="setRole('DM')">Act as DM</button>
+        <button onclick="setRole('Player')">Act as Player</button>
+        <span id="status">Role: Player</span>
+        <hr>
+        <div id="dm-tools" style="display:none;">
+            <input type="text" id="mapUrl" placeholder="Image URL">
+            <button onclick="changeMap()">Change Map</button>
+            <button onclick="addToken('Goblin',1,1)">Add Goblin</button>
+        </div>
+    </div>
+    <canvas id="vttCanvas"></canvas>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

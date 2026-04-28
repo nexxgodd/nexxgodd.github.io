@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Directory</title>
+    <style>
+        :root {
+            --primary: #2f6991;
+            --accent: #d4a017;
+            --bg: #f4f1ea;
+            --text: #332f2c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* --- MAP SECTION --- */
+        .map-section {
+            width: 100%;
+            max-width: 1024px;
+            background: white;
+			padding-left: 15px;
+			padding-right: 15px;
+            border: 4px solid var(--primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .map-image {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+
+        #map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .highlight-box {
+            fill: rgba(212, 160, 23, 0.4);
+            stroke: var(--accent);
+            stroke-width: 4;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .content-wrapper {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h2 { 
+            color: var(--primary); 
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .entry {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* FLEX HEADER FOR ALIGNMENT */
+        .entry-header {
+            display: flex;
+            justify-content: space-between; /* Pushes button to the right */
+            align-items: center; /* Centers items vertically */
+            margin-bottom: 15px;
+        }
+
+        .entry-header h3 {
+            margin: 0; /* Remove default margins to keep alignment clean */
+            color: var(--primary);
+        }
+
+        .entry:target {
+            border-left-color: var(--accent);
+            background-color: #fffdf5;
+            outline: 2px solid var(--accent);
+        }
+
+        .link-btn {
+            padding: 6px 14px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px; /* Rounded pill style */
+            font-weight: bold;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            white-space: nowrap; /* Prevents button text from wrapping */
+        }
+
+        .link-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .tag { font-weight: bold; color: var(--primary); }
+        a { color: var(--primary); font-weight: 600; }
+        a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="map-section" id="village-map-top">
+        <div class="map-container">
+            <img src="village-map.jpg" usemap="#villagemap" class="map-image">
+            <svg id="map-overlay" >
+                <rect id="highlight" class="highlight-box" x="0" y="0" width="0" height="0" />
+            </svg>
+            
+            <map name="villagemap">
+                <area shape="rect" coords="44,61,306,217" href="#farm" onclick="highlight()">
+                <area shape="rect" coords="314,40,430,145" href="#guildhall" onclick="highlight()">
+                <area shape="rect" coords="501,37,841,169" href="#graveyard" onclick="highlight()">
+                <area shape="rect" coords="852,15,987,162" href="#crypt" onclick="highlight()">
+                <area shape="rect" coords="383,155,501,285" href="#court" onclick="highlight()">
+				<area shape="rect" coords="517,175,674,287" href="#doctor" onclick="highlight()">
+				<area shape="rect" coords="688,172,850,290" href="#tavern" onclick="highlight()">
+				<area shape="rect" coords="853,187,925,247" href="#house1" onclick="highlight()">
+				<area shape="rect" coords="164,247,287,328" href="#fairyring" onclick="highlight()">
+				<area shape="rect" coords="349,288,462,408" href="#church" onclick="highlight()">
+				<area shape="rect" coords="576,337,725,453" href="#park" onclick="highlight()">
+				<area shape="rect" coords="842,294,981,437" href="#docks" onclick="highlight()">
+				<area shape="rect" coords="144,412,199,536" href="#house2" onclick="highlight()">
+				<area shape="rect" coords="199,453,272,567" href="#generalstore" onclick="highlight()">
+				<area shape="rect" coords="272,449,333,551" href="#arcanashop" onclick="highlight()">
+				<area shape="rect" coords="378,443,471,526" href="#blacksmith" onclick="highlight()">
+				<area shape="rect" coords="471,422,522,510" href="#fruitvendor" onclick="highlight()">
+				<area shape="rect" coords="522,415,570,504" href="#fishvendor" onclick="highlight()">
+				<area shape="rect" coords="384,548,461,611" href="#house3" onclick="highlight()">
+				<area shape="rect" coords="500,519,658,612" href="#house4" onclick="highlight()">
+				<area shape="rect" coords="691,476,795,549" href="#house5" onclick="highlight()">
+				<area shape="rect" coords="800,453,933,597" href="#guardpost" onclick="highlight()">
+            </map>
+        </div>
+        <p style="text-align: center; font-style: italic; color: #666;">Click a building to jump to its history.</p>
+    </div>
+
+
+
+
+    <div class="content-wrapper">
+		<!-- buildings -->
+        <section id="buildings">
+            <h2>Buildings of Note</h2>
+            
+            <div class="entry" id="farm">
+                <div class="entry-header">
+                    <h3>The Farm</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p>Yep, its a farm.</p>
+                <p><span class="tag">Occupants:</span> </p>
+            </div>
+
+            <div class="entry" id="guildhall">
+                <div class="entry-header">
+					<h3>The Guild Hall</h3>
+					<a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+				</div>
+                <p>The central hub of civic life in the village, where important decisions are made and community events are held.</p>
+                <p><span class="tag">Occupants:</span> <a href="#char-thomas">Caretaker Thomas</a></p>
+            </div>
+
+            <div class="entry" id="graveyard">
+                <div class="entry-header">
+					<h3>Ancient Graveyard</h3>
+					<a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+				</div>
+                <p>Surrounded by a heavy iron fence, this quiet corner of the village holds the remains of the founders. The large crypt in the corner remains locked most of the year.</p>
+                <p><span class="tag">Occupants:</span> <a href="#char-thomas">Caretaker Thomas</a></p>
+            </div>
+
+            <div class="entry" id="crypt">
+                <div class="entry-header">
+					<h3>Crypt</h3>
+					<a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+				</div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-thomas">Caretaker Thomas</a></p>
+            </div>
+
+            <div class="entry" id="court">
+                <div class="entry-header">
+                    <h3>The Courthouse</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="doctor">
+                <div class="entry-header">
+                    <h3>The Doctor's Office</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="tavern">
+                <div class="entry-header">
+                    <h3>The Sleeping Bear Tavern</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p>A bustling hub of activity where travelers and locals mingle. The air smells of roasted meat and expensive honey mead.</p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="house1">
+                <div class="entry-header">
+                    <h3>house1</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="fairyring">
+                <div class="entry-header">
+                    <h3>Fairy Ring</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="church">
+                <div class="entry-header">
+                    <h3>The Church</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="park">
+                <div class="entry-header">
+                    <h3>The Village Park</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p>A peaceful green space where villagers gather to relax and socialize. The park features a small fountain and several benches. 
+					<details>
+						<summary>Click to reveal spoiler</summary>
+						Stop him
+					</details>
+				</p>
+            </div>
+
+            <div class="entry" id="docks">
+                <div class="entry-header">
+                    <h3>The Docks</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="house2">
+                <div class="entry-header">
+                    <h3>The House</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="generalstore">
+                <div class="entry-header">
+                    <h3>The General Store</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="arcanashop">
+                <div class="entry-header">
+                    <h3>The Arcane Shop</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="blacksmith">
+                <div class="entry-header">
+                    <h3>The Blacksmith</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="fruitvendor">
+                <div class="entry-header">
+                    <h3>The Fruit Vendor</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="fishvendor">
+                <div class="entry-header">
+                    <h3>The Fish Vendor</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="house3">
+                <div class="entry-header">
+                    <h3>The House</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="house4">
+                <div class="entry-header">
+                    <h3>The House</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="house5">
+                <div class="entry-header">
+                    <h3>The House</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+
+            <div class="entry" id="guardpost">
+                <div class="entry-header">
+                    <h3>The Guard Post</h3>
+                    <a href="#village-map-top" class="link-btn" onclick="highlight()">Find on Map</a>
+                </div>
+                <p></p>
+                <p><span class="tag">Occupants:</span> <a href="#char-barnaby">Innkeeper Barnaby</a></p>
+            </div>
+        </section>
+
+
+
+
+
+
+
+		<!-- Inhabitants -->
+        <section id="characters">
+            <h2>Key Inhabitants</h2>
+
+            <div class="entry" id="char-barnaby">
+                <h3>Innkeeper Barnaby</h3>
+                <p>Known for his strength and his refusal to serve anyone who doesn't respect his tavern. He lives in a small room behind the kitchen.</p>
+                <p><span class="tag">Location:</span> <a href="#tavern">The Sleeping Bear Tavern</a></p>
+            </div>
+
+            <div class="entry" id="char-thomas">
+                <h3>Caretaker Thomas</h3>
+                <p>Thomas is often seen cleaning the fountain or tending the graves. He is the only one with a key to the Crypt.</p>
+                <p><span class="tag">Location:</span> <a href="#graveyard">The Graveyard</a></p>
+            </div>
+        </section>
+
+
+
+        
+		<!-- Other -->
+        <section id="characters">
+            <h2>Other</h2>
+
+            <div class="entry" id="other-start">
+                <h3>Quest Start</h3>
+                <p>The adventures are all looking for work about the same time. A job came in about a missing relic.
+                    There is a potential lead that the minotour that stole the relic boarded a ship to a nearby island.
+                </p>
+            </div>
+
+            <div class="entry" id="other-boat">
+                <h3>Ship to Island</h3>
+                <p>Mostly smooth sailing (literaly) but ship is attacked by reverse mermaids</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function highlight() {
+			let ele=event.target;
+			if(event.target.tagName != 'AREA') {
+				ele=document.querySelector(`[href='#${event.target.parentElement.parentElement.id}']`);
+			}
+			// console.log(event.target.tagName)
+			// console.log(event.target.parentElement.parentElement.id)
+			let [x, y, w, h] = ele.coords.split(',');
+			console.log(x+ ','+ y+ ','+ w+ ','+ h)
+			console.log(ele.href.split('#')[1])
+
+            const rect = document.getElementById('highlight');
+            
+            // Set SVG coordinates
+            rect.setAttribute('x', x);
+            rect.setAttribute('y', y);
+            rect.setAttribute('width', w-x);
+            rect.setAttribute('height', h-y);
+            
+            // Show the highlight
+            rect.style.display = 'block';
+
+            // Optional: The highlight stays on until you click another building, 
+            // helping the user keep their orientation after scrolling back up.
+        }
+    </script>
+</body>
+</html>
